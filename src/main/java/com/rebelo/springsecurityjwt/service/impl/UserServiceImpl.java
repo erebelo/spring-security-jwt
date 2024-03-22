@@ -1,10 +1,13 @@
 package com.rebelo.springsecurityjwt.service.impl;
 
+import com.rebelo.springsecurityjwt.config.DbLoaderConfiguration;
 import com.rebelo.springsecurityjwt.domain.entity.UserEntity;
+import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
 import com.rebelo.springsecurityjwt.exception.DuplicationException;
 import com.rebelo.springsecurityjwt.exception.NotFoundException;
 import com.rebelo.springsecurityjwt.repository.UserRepository;
 import com.rebelo.springsecurityjwt.service.UserService;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,7 +50,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public UserEntity create(UserEntity user) {
         user.setId(null);
-//        user.addRole(Role.USER);
+        user.addRole(DbLoaderConfiguration.getRoleByName(RoleEnum.USER));
 
         checkEmailDuplication(user);
 
@@ -74,7 +77,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     private void checkEmailDuplication(UserEntity user) {
         final String email = user.getEmail();
-        if (email != null && email.length() > 0) {
+        if (StringUtils.isNotEmpty(email)) {
             final Long id = user.getId();
             final UserEntity u = repository.findByEmail(email).orElse(null);
             if (u != null && !Objects.equals(u.getId(), id)) {

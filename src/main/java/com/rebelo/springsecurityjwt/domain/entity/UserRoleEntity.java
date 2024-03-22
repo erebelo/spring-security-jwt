@@ -1,6 +1,9 @@
 package com.rebelo.springsecurityjwt.domain.entity;
 
 import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,17 +13,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
+@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ROLES")
-public class UserRoleEntity {
+public class UserRoleEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
     public UserRoleEntity(RoleEnum role) {

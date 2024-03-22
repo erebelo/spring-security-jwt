@@ -1,12 +1,12 @@
 package com.rebelo.springsecurityjwt.domain.entity;
 
-import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -18,6 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,7 +32,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "USERS")
-public class UserEntity implements UserDetails {
+public class UserEntity implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,9 +48,8 @@ public class UserEntity implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<UserRoleEntity> roles = new HashSet<>() {{
-        add(new UserRoleEntity(RoleEnum.USER));
-    }};
+    @JoinTable(name = "USER_ROLES")
+    private Set<UserRoleEntity> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

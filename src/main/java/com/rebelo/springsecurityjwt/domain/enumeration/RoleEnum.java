@@ -1,6 +1,5 @@
 package com.rebelo.springsecurityjwt.domain.enumeration;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rebelo.springsecurityjwt.domain.enumeration.type.EnumCodeValueType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,11 +15,8 @@ import java.util.Map;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum RoleEnum implements EnumCodeValueType {
 
-    @JsonProperty("User")
-    USER("User", "Regular user"),
-
-    @JsonProperty("Admin")
-    ADMIN("Admin", "Admin user");
+    USER("USER", "Regular user"),
+    ADMIN("ADMIN", "Admin user");
 
     private static final Map<String, RoleEnum> ENUM_MAP;
 
