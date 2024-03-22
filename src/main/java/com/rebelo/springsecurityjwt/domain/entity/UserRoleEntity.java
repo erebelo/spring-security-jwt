@@ -30,7 +30,10 @@ public class UserRoleEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
+    private String description;
+
     public UserRoleEntity(RoleEnum role) {
         this.role = role;
+        this.description = role.getValue();
     }
 }
