@@ -3,19 +3,25 @@ package com.rebelo.springsecurityjwt.service.impl;
 import com.rebelo.springsecurityjwt.config.DbLoaderConfiguration;
 import com.rebelo.springsecurityjwt.domain.entity.UserEntity;
 import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
+import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
+import com.rebelo.springsecurityjwt.domain.request.UserRequest;
+import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import com.rebelo.springsecurityjwt.exception.DuplicationException;
 import com.rebelo.springsecurityjwt.exception.NotFoundException;
+import com.rebelo.springsecurityjwt.mapper.UserMapper;
 import com.rebelo.springsecurityjwt.repository.UserRepository;
 import com.rebelo.springsecurityjwt.service.UserService;
-import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+
+import static com.rebelo.springsecurityjwt.util.AuthorizationUtil.getAuthenticatedUsername;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -23,66 +29,95 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private UserMapper mapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            return this.findByEmail(username);
+            return this.findEntityByEmail(username);
         } catch (Exception e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
     }
 
     @Override
-    public UserEntity findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("User not found: " + id));
+    public List<UserResponse> findAll() {
+        var userEntityList = repository.findAll();
+        return mapper.entityListToResponseList(userEntityList);
     }
 
     @Override
-    public UserEntity findByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new NotFoundException("Person not found: " + email));
+    public UserResponse findById(Long id) {
+        var userEntity = this.findEntityById(id);
+        return mapper.entityToResponse(userEntity);
     }
 
     @Override
-    public List<UserEntity> findAll() {
-        return repository.findAll();
+    public UserResponse findByEmail(String email) {
+        var userEntity = this.findEntityByEmail(email);
+        return mapper.entityToResponse(userEntity);
     }
 
     @Override
-    public UserEntity create(UserEntity user) {
-        user.setId(null);
-        user.addRole(DbLoaderConfiguration.getRoleByName(RoleEnum.USER));
+    public UserResponse insert(UserCreateRequest userCreateRequest) {
+        checkEmailDuplication(userCreateRequest.getEmail());
 
-        checkEmailDuplication(user);
+        var userEntity = mapper.requestToEntity(userCreateRequest);
+        userEntity.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
+        userEntity.addRole(DbLoaderConfiguration.getRoleByName(RoleEnum.USER));
 
-        return repository.save(user);
+        userEntity = repository.save(userEntity);
+        return mapper.entityToResponse(userEntity);
     }
 
     @Override
-    public UserEntity update(UserEntity user) {
-        checkEmailDuplication(user);
+    public UserResponse update(Long id, UserRequest userRequest) {
+        var userEntity = validateIdentityAndRetrievingUserEntity(id);
+        checkEmailDuplication(userRequest.getEmail());
 
-        UserEntity u = this.findById(user.getId());
-        u.setName(user.getName());
-        u.setEmail(user.getEmail());
-        u.setRoles(user.getRoles());
+        var newUserEntity = mapper.requestToEntity(userRequest);
+        newUserEntity.setId(userEntity.getId());
+        newUserEntity.setPassword(userEntity.getPassword());
+        newUserEntity.setRoles(userEntity.getRoles());
 
-        return repository.save(u);
+        newUserEntity = repository.save(newUserEntity);
+        return mapper.entityToResponse(newUserEntity);
     }
 
     @Override
     public void delete(Long id) {
-        final UserEntity u = this.findById(id);
-        repository.delete(u);
+        var userEntity = validateIdentityAndRetrievingUserEntity(id);
+        repository.delete(userEntity);
     }
 
-    private void checkEmailDuplication(UserEntity user) {
-        final String email = user.getEmail();
-        if (StringUtils.isNotEmpty(email)) {
-            final Long id = user.getId();
-            final UserEntity u = repository.findByEmail(email).orElse(null);
-            if (u != null && !Objects.equals(u.getId(), id)) {
-                throw new DuplicationException("Email duplication: " + email);
-            }
+    public UserEntity findEntityById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("User not found by id: " + id));
+    }
+
+    public UserEntity findEntityByEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found by email: " + email));
+    }
+
+    private UserEntity validateIdentityAndRetrievingUserEntity(Long id) {
+        var authenticatedEmail = getAuthenticatedUsername();
+        var userEntity = this.findEntityByEmail(authenticatedEmail);
+
+        if (Objects.equals(userEntity.getId(), id)) {
+            return userEntity;
+        }
+
+        throw new IllegalStateException("Data inconsistency: Invalid provided credentials");
+    }
+
+    private void checkEmailDuplication(String email) {
+        var userEntityFound = repository.findByEmail(email).orElse(null);
+
+        if (Objects.nonNull(userEntityFound)) {
+            throw new DuplicationException("Email already in use: " + email);
         }
     }
 }

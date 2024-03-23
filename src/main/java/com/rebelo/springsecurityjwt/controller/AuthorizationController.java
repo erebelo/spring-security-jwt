@@ -1,9 +1,9 @@
 package com.rebelo.springsecurityjwt.controller;
 
-import com.rebelo.springsecurityjwt.domain.entity.UserEntity;
 import com.rebelo.springsecurityjwt.domain.request.AuthenticationRequest;
-import com.rebelo.springsecurityjwt.domain.request.RegisterRequest;
+import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
 import com.rebelo.springsecurityjwt.domain.response.AuthenticationResponse;
+import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import com.rebelo.springsecurityjwt.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,15 +22,15 @@ import static com.rebelo.springsecurityjwt.constants.BusinessConstants.SIGN_UP_P
 public class AuthorizationController {
 
     @Autowired
-    private AuthenticationService authService;
+    private AuthenticationService service;
 
     @PostMapping(value = SIGN_UP_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserEntity> register(@RequestBody RegisterRequest registerRequest) {
-        return ResponseEntity.ok(authService.signUp(registerRequest));
+    public ResponseEntity<UserResponse> signUp(@RequestBody UserCreateRequest userCreateRequest) {
+        return ResponseEntity.ok(service.signUp(userCreateRequest));
     }
 
     @PostMapping(value = AUTHENTICATE_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-        return ResponseEntity.ok(authService.authenticate(authenticationRequest));
+        return ResponseEntity.ok(service.authenticate(authenticationRequest));
     }
 }

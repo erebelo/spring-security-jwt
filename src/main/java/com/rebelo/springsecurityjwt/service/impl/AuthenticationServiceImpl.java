@@ -1,15 +1,14 @@
 package com.rebelo.springsecurityjwt.service.impl;
 
-import com.rebelo.springsecurityjwt.domain.entity.UserEntity;
 import com.rebelo.springsecurityjwt.domain.request.AuthenticationRequest;
-import com.rebelo.springsecurityjwt.domain.request.RegisterRequest;
+import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
 import com.rebelo.springsecurityjwt.domain.response.AuthenticationResponse;
+import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import com.rebelo.springsecurityjwt.service.AuthenticationService;
 import com.rebelo.springsecurityjwt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,26 +21,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private JwtServiceImpl jwtService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Override
-    public UserEntity signUp(RegisterRequest registerRrequest) {
-        UserEntity user = new UserEntity();
-        user.setName(registerRrequest.getName());
-        user.setEmail(registerRrequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRrequest.getPassword()));
-
-        return userService.create(user);
+    public UserResponse signUp(UserCreateRequest userCreateRequest) {
+        return userService.insert(userCreateRequest);
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest authRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+                authenticationRequest.getPassword()));
 
-        UserEntity user = userService.findByEmail(authRequest.getEmail());
-        return new AuthenticationResponse(jwtService.generateToken(user.getEmail()));
+        var userEntity = userService.findByEmail(authenticationRequest.getEmail());
+        return new AuthenticationResponse(jwtService.generateToken(userEntity.getEmail()));
     }
 }

@@ -1,14 +1,14 @@
 package com.rebelo.springsecurityjwt.service;
 
-import com.rebelo.springsecurityjwt.domain.entity.UserEntity;
 import com.rebelo.springsecurityjwt.domain.request.AuthenticationRequest;
-import com.rebelo.springsecurityjwt.domain.request.RegisterRequest;
+import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
 import com.rebelo.springsecurityjwt.domain.response.AuthenticationResponse;
+import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 
 public interface AuthenticationService {
 
-    UserEntity signUp(RegisterRequest registerRrequest);
+    UserResponse signUp(UserCreateRequest userCreateRequest);
 
-    AuthenticationResponse authenticate(AuthenticationRequest authRequest);
+    AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
 
 }

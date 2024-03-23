@@ -1,8 +1,7 @@
-package com.rebelo.springsecurityjwt.domain.request;
+package com.rebelo.springsecurityjwt.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,12 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AuthenticationRequest {
+public class UserResponse {
 
-    @NotBlank(message = "email is mandatory")
+    private Long id;
+    private String name;
     private String email;
-
-    @NotBlank(message = "password is mandatory")
-    private String password;
 
 }
