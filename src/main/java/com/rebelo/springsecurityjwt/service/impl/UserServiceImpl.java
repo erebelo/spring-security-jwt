@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,9 +30,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     private UserMapper mapper;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -52,13 +48,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserResponse findById(Long id) {
-        var userEntity = this.findEntityById(id);
+        var userEntity = validateIdentityAndRetrievingUserEntity(id);
         return mapper.entityToResponse(userEntity);
     }
 
     @Override
     public UserResponse findByEmail(String email) {
-        var userEntity = this.findEntityByEmail(email);
+        var userEntity = validateIdentityAndRetrievingUserEntity(email);
         return mapper.entityToResponse(userEntity);
     }
 
@@ -67,7 +63,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         checkEmailDuplication(userCreateRequest.getEmail());
 
         var userEntity = mapper.requestToEntity(userCreateRequest);
-        userEntity.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
         userEntity.addRole(DbLoaderConfiguration.getRoleByName(RoleEnum.USER));
 
         userEntity = repository.save(userEntity);
@@ -90,7 +85,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public void delete(Long id) {
-        var userEntity = validateIdentityAndRetrievingUserEntity(id);
+        var userEntity = this.findEntityById(id);
         repository.delete(userEntity);
     }
 
@@ -108,6 +103,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         if (Objects.equals(userEntity.getId(), id)) {
             return userEntity;
+        }
+
+        throw new IllegalStateException("Data inconsistency: Invalid provided credentials");
+    }
+
+    private UserEntity validateIdentityAndRetrievingUserEntity(String email) {
+        var authenticatedEmail = getAuthenticatedUsername();
+
+        if (Objects.equals(authenticatedEmail, email)) {
+            return this.findEntityByEmail(authenticatedEmail);
         }
 
         throw new IllegalStateException("Data inconsistency: Invalid provided credentials");

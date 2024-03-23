@@ -49,7 +49,7 @@ public class UserEntity implements UserDetails, Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLES")
-    private Set<UserRoleEntity> roles = new HashSet<>();
+    private Set<UserRoleEntity> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,6 +63,9 @@ public class UserEntity implements UserDetails, Serializable {
     }
 
     public void addRole(UserRoleEntity role) {
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
         this.roles.add(role);
     }
 

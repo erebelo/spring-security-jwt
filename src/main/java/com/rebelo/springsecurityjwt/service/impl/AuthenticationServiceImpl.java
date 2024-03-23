@@ -9,6 +9,8 @@ import com.rebelo.springsecurityjwt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,13 +20,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
     private JwtServiceImpl jwtService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserResponse signUp(UserCreateRequest userCreateRequest) {
+        userCreateRequest.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
         return userService.insert(userCreateRequest);
     }
 
@@ -33,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                 authenticationRequest.getPassword()));
 
-        var userEntity = userService.findByEmail(authenticationRequest.getEmail());
-        return new AuthenticationResponse(jwtService.generateToken(userEntity.getEmail()));
+        var userResponse = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+        return new AuthenticationResponse(jwtService.generateToken(userResponse.getUsername()));
     }
 }
