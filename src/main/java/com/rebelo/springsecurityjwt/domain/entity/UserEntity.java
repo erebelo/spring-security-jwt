@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.rebelo.springsecurityjwt.constants.BusinessConstants.ROLE_PREFIX;
+
 @Entity
 @Data
 @Builder
@@ -56,7 +58,7 @@ public class UserEntity implements UserDetails, Serializable {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         for (UserRoleEntity role : this.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getRole().getCode().toUpperCase()));
+            authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getRole().getCode().toUpperCase()));
         }
 
         return authorities;

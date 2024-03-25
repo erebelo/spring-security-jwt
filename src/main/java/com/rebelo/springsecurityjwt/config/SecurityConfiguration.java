@@ -1,5 +1,6 @@
 package com.rebelo.springsecurityjwt.config;
 
+import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,15 +12,14 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -27,11 +27,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static com.rebelo.springsecurityjwt.constants.BusinessConstants.ANY_PATH_SUFFIX;
+import static com.rebelo.springsecurityjwt.constants.BusinessConstants.AUTHORIZATION_PATH;
+import static com.rebelo.springsecurityjwt.constants.BusinessConstants.HEALTH_CHECK_PATH;
+import static com.rebelo.springsecurityjwt.constants.BusinessConstants.ROLE_PREFIX;
+import static com.rebelo.springsecurityjwt.constants.BusinessConstants.USER_PATH;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private static final String[] PUBLIC_MATCHERS = {"/authorization/**", "/test/**"};
+    private static final String[] PUBLIC_MATCHERS = {HEALTH_CHECK_PATH, AUTHORIZATION_PATH + ANY_PATH_SUFFIX,};
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -42,10 +49,13 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(toH2Console()).permitAll()
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                        .requestMatchers(HttpMethod.DELETE).hasAuthority("ADMIN")
-                        //.requestMatchers(HttpMethod.DELETE).hasRole("ADMIN") // If UserDetails.getAuthorities return [ROLE_ADMIN, ...]
+                        .requestMatchers(HttpMethod.DELETE).hasRole(RoleEnum.ADMIN.getCode())
+                        // hasAuthority is more flexible for fine-grained permissions such as ROLE_READ_SOMETHING
+                        .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(ROLE_PREFIX + RoleEnum.ADMIN.getCode())
                         .anyRequest().authenticated())
+                .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -53,15 +63,10 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
-    }
-
-    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8005"));
-        configuration.setAllowedMethods(Arrays.asList("GET"));
+        configuration.setAllowedMethods(Collections.singletonList("GET"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
