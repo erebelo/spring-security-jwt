@@ -24,7 +24,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static com.rebelo.springsecurityjwt.constants.BusinessConstants.ANY_PATH_SUFFIX;
@@ -64,13 +63,16 @@ public class SecurityConfiguration {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8005"));
-        configuration.setAllowedMethods(Collections.singletonList("GET"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowedOrigins(Collections.singletonList("http://localhost:8005"));
+        cors.setAllowedMethods(Collections.singletonList("*"));
+        cors.setAllowedHeaders(Collections.singletonList("*"));
+        cors.setExposedHeaders(Collections.singletonList("Authorization"));
+        cors.setAllowCredentials(true);
+        cors.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", cors);
 
         return source;
     }
