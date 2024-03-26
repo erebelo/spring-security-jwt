@@ -26,18 +26,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
 
-import static com.rebelo.springsecurityjwt.constants.BusinessConstants.ANY_PATH_SUFFIX;
-import static com.rebelo.springsecurityjwt.constants.BusinessConstants.AUTHORIZATION_PATH;
-import static com.rebelo.springsecurityjwt.constants.BusinessConstants.HEALTH_CHECK_PATH;
-import static com.rebelo.springsecurityjwt.constants.BusinessConstants.ROLE_PREFIX;
-import static com.rebelo.springsecurityjwt.constants.BusinessConstants.USER_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ANY_PATH_SUFFIX;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHORIZATION_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.HEALTH_CHECK_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ROLE_PREFIX;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private static final String[] PUBLIC_MATCHERS = {HEALTH_CHECK_PATH, AUTHORIZATION_PATH + ANY_PATH_SUFFIX,};
+    private static final String[] PUBLIC_WHITELIST = {
+            "/v3/api-docs", "/v3/api-docs/swagger-config", "/swagger-ui/**",
+            HEALTH_CHECK_PATH, AUTHORIZATION_PATH + ANY_PATH_SUFFIX};
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -49,7 +51,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(toH2Console()).permitAll()
-                        .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                        .requestMatchers(PUBLIC_WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.DELETE).hasRole(RoleEnum.ADMIN.getCode())
                         // hasAuthority is more flexible for fine-grained permissions such as ROLE_READ_SOMETHING
                         .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(ROLE_PREFIX + RoleEnum.ADMIN.getCode())

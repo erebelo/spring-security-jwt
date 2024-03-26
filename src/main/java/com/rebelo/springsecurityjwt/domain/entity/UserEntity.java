@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.rebelo.springsecurityjwt.constants.BusinessConstants.ROLE_PREFIX;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ROLE_PREFIX;
 
 @Entity
 @Data

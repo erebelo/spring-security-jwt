@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 public class UserCreateRequest extends UserRequest {
 
     @NotBlank(message = "password is mandatory")
-    @Size(max = 60, message = "Maximum 60 characters allowed for password")
+    @Size(min = 5, max = 20, message = "password must be between 5 to 20 characters")
     private String password;
 
 }
