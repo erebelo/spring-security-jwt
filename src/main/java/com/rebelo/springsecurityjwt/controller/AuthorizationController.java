@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHENTICATE_PATH;
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHORIZATION_PATH;
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.SIGN_UP_PATH;
+import static com.rebelo.springsecurityjwt.util.UriUtil.buildSignUpUri;
 
 @RestController
 @AllArgsConstructor
@@ -33,7 +32,7 @@ public class AuthorizationController {
     @PostMapping(value = SIGN_UP_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> signUp(@RequestBody UserCreateRequest userCreateRequest) {
         var response = service.signUp(userCreateRequest);
-        return ResponseEntity.created(URI.create("/" + response.getId())).body(response);
+        return ResponseEntity.created(buildSignUpUri(response.getId())).body(response);
     }
 
     @Operation(summary = "POST Authenticate")
