@@ -12,8 +12,8 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserRequest {

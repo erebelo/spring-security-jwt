@@ -1,7 +1,7 @@
 package com.rebelo.springsecurityjwt.config;
 
 import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -35,14 +35,13 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private static final String[] PUBLIC_WHITELIST = {
-            "/v3/api-docs", "/v3/api-docs/swagger-config", "/swagger-ui/**",
-            HEALTH_CHECK_PATH, AUTHORIZATION_PATH + ANY_PATH_SUFFIX};
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private static final String[] PUBLIC_WHITELIST = {"/v3/api-docs", "/v3/api-docs/swagger-config", "/swagger-ui/**",
+            HEALTH_CHECK_PATH, AUTHORIZATION_PATH + ANY_PATH_SUFFIX};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
@@ -53,7 +52,7 @@ public class SecurityConfiguration {
                         .requestMatchers(toH2Console()).permitAll()
                         .requestMatchers(PUBLIC_WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.DELETE).hasRole(RoleEnum.ADMIN.getCode())
-                        // hasAuthority is more flexible for fine-grained permissions such as ROLE_READ_SOMETHING
+                        // hasAuthority is more flexible for fine-grained permissions
                         .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(ROLE_PREFIX + RoleEnum.ADMIN.getCode())
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
@@ -65,7 +64,7 @@ public class SecurityConfiguration {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration cors = new CorsConfiguration();
+        final CorsConfiguration cors = new CorsConfiguration();
         cors.setAllowedOrigins(Collections.singletonList("http://localhost:8005"));
         cors.setAllowedMethods(Collections.singletonList("*"));
         cors.setAllowedHeaders(Collections.singletonList("*"));
@@ -73,7 +72,7 @@ public class SecurityConfiguration {
         cors.setAllowCredentials(true);
         cors.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cors);
 
         return source;

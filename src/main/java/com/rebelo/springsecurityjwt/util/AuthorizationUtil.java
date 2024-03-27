@@ -15,7 +15,7 @@ public final class AuthorizationUtil {
             return authentication.getName();
         }
 
-        throw new IllegalStateException("No authenticated user found in the security context");
+        throw new IllegalStateException("No authenticated user found by security context");
 
     }
 

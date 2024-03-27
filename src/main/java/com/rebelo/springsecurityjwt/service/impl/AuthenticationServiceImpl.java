@@ -6,7 +6,7 @@ import com.rebelo.springsecurityjwt.domain.response.AuthenticationResponse;
 import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import com.rebelo.springsecurityjwt.service.AuthenticationService;
 import com.rebelo.springsecurityjwt.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,22 +14,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtServiceImpl jwtService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final UserDetailsService userDetailsService;
+    private final JwtServiceImpl jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse signUp(UserCreateRequest userCreateRequest) {
@@ -42,7 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                 authenticationRequest.getPassword()));
 
-        var userResponse = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
-        return new AuthenticationResponse(jwtService.generateToken(userResponse.getUsername()));
+        var userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+        return new AuthenticationResponse(jwtService.generateToken(userDetails.getUsername()));
     }
 }

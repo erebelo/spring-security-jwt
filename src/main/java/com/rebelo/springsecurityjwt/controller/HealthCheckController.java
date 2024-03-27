@@ -2,7 +2,6 @@ package com.rebelo.springsecurityjwt.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +16,8 @@ import static com.rebelo.springsecurityjwt.constant.BusinessConstant.HEALTH_CHEC
 public class HealthCheckController {
 
     @Operation(summary = "GET Health Check")
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getHealthCheck() {
-        return new ResponseEntity<>("Spring Security JWT application is up and running", HttpStatus.OK);
+        return ResponseEntity.ok("Spring Security JWT application is up and running");
     }
 }

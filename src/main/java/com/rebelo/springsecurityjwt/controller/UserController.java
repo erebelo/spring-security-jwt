@@ -6,8 +6,7 @@ import com.rebelo.springsecurityjwt.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,12 +24,12 @@ import static com.rebelo.springsecurityjwt.constant.BusinessConstant.FILTER_PATH
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(USER_PATH)
 @Tag(name = "User API")
 public class UserController {
 
-    @Autowired
-    private UserService service;
+    private final UserService service;
 
     @Operation(summary = "GET All Users")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,6 +59,6 @@ public class UserController {
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

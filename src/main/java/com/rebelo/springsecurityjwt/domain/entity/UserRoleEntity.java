@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Entity
 @Data
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ROLES")

@@ -30,9 +30,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return username.equalsIgnoreCase(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class JwtServiceImpl implements JwtService {
                 .getPayload();
     }
 
-    private Boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

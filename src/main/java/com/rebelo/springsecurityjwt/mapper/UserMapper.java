@@ -5,6 +5,7 @@ import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
 import com.rebelo.springsecurityjwt.domain.request.UserRequest;
 import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -17,9 +18,14 @@ public interface UserMapper {
 
     UserResponse entityToResponse(UserEntity userEntity);
 
-    UserEntity requestToEntity(UserCreateRequest userCreateRequest);
+    UserEntity createRequestToEntity(UserCreateRequest userCreateRequest);
 
-    UserEntity requestToEntity(UserRequest userRequest);
+    @Mapping(target = "id", source = "userEntity.id")
+    @Mapping(target = "name", source = "userRequest.name")
+    @Mapping(target = "email", source = "userRequest.email")
+    @Mapping(target = "password", source = "userEntity.password")
+    @Mapping(target = "roles", source = "userEntity.roles")
+    UserEntity requestToEntity(UserRequest userRequest, UserEntity userEntity);
 
 }
 

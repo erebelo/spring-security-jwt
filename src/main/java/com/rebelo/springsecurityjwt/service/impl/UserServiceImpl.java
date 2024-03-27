@@ -11,7 +11,7 @@ import com.rebelo.springsecurityjwt.exception.NotFoundException;
 import com.rebelo.springsecurityjwt.mapper.UserMapper;
 import com.rebelo.springsecurityjwt.repository.UserRepository;
 import com.rebelo.springsecurityjwt.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,13 +23,11 @@ import java.util.Objects;
 import static com.rebelo.springsecurityjwt.util.AuthorizationUtil.getAuthenticatedUsername;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserDetailsService, UserService {
 
-    @Autowired
-    private UserRepository repository;
-
-    @Autowired
-    private UserMapper mapper;
+    private final UserRepository repository;
+    private final UserMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -62,7 +60,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserResponse insert(UserCreateRequest userCreateRequest) {
         checkEmailDuplication(userCreateRequest.getEmail());
 
-        var userEntity = mapper.requestToEntity(userCreateRequest);
+        var userEntity = mapper.createRequestToEntity(userCreateRequest);
         userEntity.addRole(DbLoaderConfiguration.getRoleByName(RoleEnum.USER));
 
         userEntity = repository.save(userEntity);
@@ -74,10 +72,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         var userEntity = validateIdentityAndRetrievingUserEntity(id);
         checkEmailDuplication(userRequest.getEmail());
 
-        var newUserEntity = mapper.requestToEntity(userRequest);
-        newUserEntity.setId(userEntity.getId());
-        newUserEntity.setPassword(userEntity.getPassword());
-        newUserEntity.setRoles(userEntity.getRoles());
+        var newUserEntity = mapper.requestToEntity(userRequest, userEntity);
 
         newUserEntity = repository.save(newUserEntity);
         return mapper.entityToResponse(newUserEntity);

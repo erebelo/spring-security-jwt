@@ -1,6 +1,5 @@
 package com.rebelo.springsecurityjwt.domain.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,9 +26,9 @@ import java.util.Set;
 
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ROLE_PREFIX;
 
-@Entity
 @Data
 @Builder
+@Entity
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,13 +39,8 @@ public class UserEntity implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, length = 50)
     private String name;
-
-    @Column(nullable = false, unique = true, length = 100)
     private String email;
-
-    @Column(nullable = false, length = 60)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -68,6 +62,7 @@ public class UserEntity implements UserDetails, Serializable {
         if (this.roles == null) {
             this.roles = new HashSet<>();
         }
+
         this.roles.add(role);
     }
 
