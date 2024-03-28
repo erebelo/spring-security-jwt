@@ -2,6 +2,7 @@ package com.rebelo.springsecurityjwt.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -15,7 +16,7 @@ public final class AuthorizationUtil {
             return authentication.getName();
         }
 
-        throw new IllegalStateException("No authenticated user found by security context");
+        throw new AuthenticationCredentialsNotFoundException("No authenticated user found by security context");
 
     }
 

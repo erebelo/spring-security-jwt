@@ -1,4 +1,4 @@
-package com.rebelo.springsecurityjwt.exception;
+package com.rebelo.springsecurityjwt.exception.model;
 
 public class NotFoundException extends RuntimeException {
 

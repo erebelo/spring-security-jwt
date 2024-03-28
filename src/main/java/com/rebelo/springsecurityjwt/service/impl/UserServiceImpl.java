@@ -6,8 +6,8 @@ import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
 import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
 import com.rebelo.springsecurityjwt.domain.request.UserRequest;
 import com.rebelo.springsecurityjwt.domain.response.UserResponse;
-import com.rebelo.springsecurityjwt.exception.DuplicationException;
-import com.rebelo.springsecurityjwt.exception.NotFoundException;
+import com.rebelo.springsecurityjwt.exception.model.NotFoundException;
+import com.rebelo.springsecurityjwt.exception.model.UnprocessableEntityException;
 import com.rebelo.springsecurityjwt.mapper.UserMapper;
 import com.rebelo.springsecurityjwt.repository.UserRepository;
 import com.rebelo.springsecurityjwt.service.UserService;
@@ -30,6 +30,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
+    private static final String INVALID_CREDENTIALS_ERROR_MESSAGE = "Data inconsistency: Invalid provided credentials";
+    private static final String DUPLICATED_EMAIL_ERROR_MESSAGE = "Email already in use: %s";
+    private static final String USER_NOT_FOUND_ERROR_MESSAGE = "User not found by %s: %s";
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
@@ -47,13 +51,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserResponse findById(Long id) {
-        var userEntity = validateIdentityAndRetrievingUserEntity(id);
+        var userEntity = validateIdentityById(id);
         return mapper.entityToResponse(userEntity);
     }
 
     @Override
     public UserResponse findByEmail(String email) {
-        var userEntity = validateIdentityAndRetrievingUserEntity(email);
+        var userEntity = validateIdentityByEmail(email);
         return mapper.entityToResponse(userEntity);
     }
 
@@ -72,7 +76,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public UserResponse update(Long id, UserRequest userRequest) {
-        var userEntity = validateIdentityAndRetrievingUserEntity(id);
+        var userEntity = validateIdentityById(id);
         checkEmailDuplication(userRequest.getEmail());
 
         var newUserEntity = mapper.requestToEntity(userRequest, userEntity);
@@ -89,14 +93,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     public UserEntity findEntityById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("User not found by id: " + id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND_ERROR_MESSAGE, "id", id)));
     }
 
     public UserEntity findEntityByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found by email: " + email));
+        return repository.findByEmail(email).orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND_ERROR_MESSAGE, "email", email)));
     }
 
-    private UserEntity validateIdentityAndRetrievingUserEntity(Long id) {
+    private UserEntity validateIdentityById(Long id) {
         var authenticatedEmail = getAuthenticatedUsername();
         var userEntity = this.findEntityByEmail(authenticatedEmail);
 
@@ -104,24 +108,24 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return userEntity;
         }
 
-        throw new IllegalStateException("Data inconsistency: Invalid provided credentials");
+        throw new UnprocessableEntityException(INVALID_CREDENTIALS_ERROR_MESSAGE);
     }
 
-    private UserEntity validateIdentityAndRetrievingUserEntity(String email) {
+    private UserEntity validateIdentityByEmail(String email) {
         var authenticatedEmail = getAuthenticatedUsername();
 
         if (Objects.equals(authenticatedEmail, email)) {
             return this.findEntityByEmail(authenticatedEmail);
         }
 
-        throw new IllegalStateException("Data inconsistency: Invalid provided credentials");
+        throw new UnprocessableEntityException(INVALID_CREDENTIALS_ERROR_MESSAGE);
     }
 
     private void checkEmailDuplication(String email) {
         var userEntityFound = repository.findByEmail(email).orElse(null);
 
         if (Objects.nonNull(userEntityFound)) {
-            throw new DuplicationException("Email already in use: " + email);
+            throw new UnprocessableEntityException(String.format(DUPLICATED_EMAIL_ERROR_MESSAGE, email));
         }
     }
 }
