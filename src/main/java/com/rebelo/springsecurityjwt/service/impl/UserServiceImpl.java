@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +58,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse insert(UserCreateRequest userCreateRequest) {
         checkEmailDuplication(userCreateRequest.getEmail());
 
@@ -68,6 +70,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse update(Long id, UserRequest userRequest) {
         var userEntity = validateIdentityAndRetrievingUserEntity(id);
         checkEmailDuplication(userRequest.getEmail());
@@ -79,6 +82,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         var userEntity = this.findEntityById(id);
         repository.delete(userEntity);

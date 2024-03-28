@@ -7,6 +7,7 @@ import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import com.rebelo.springsecurityjwt.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,14 @@ public class AuthorizationController {
 
     @Operation(summary = "POST Sign Up")
     @PostMapping(value = SIGN_UP_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> signUp(@RequestBody UserCreateRequest userCreateRequest) {
+    public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserCreateRequest userCreateRequest) {
         var response = service.signUp(userCreateRequest);
         return ResponseEntity.created(buildSignUpUri(response.getId())).body(response);
     }
 
     @Operation(summary = "POST Authenticate")
     @PostMapping(value = AUTHENTICATE_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(service.authenticate(authenticationRequest));
     }
 }

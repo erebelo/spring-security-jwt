@@ -8,6 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,10 +43,19 @@ public class UserEntity implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "name is mandatory")
+    @Size(min = 2, max = 50, message = "name must be between 6 to 50 characters")
     private String name;
+
+    @NotBlank(message = "email is mandatory")
+    @Email(message = "Invalid email address")
+    @Size(min = 6, max = 50, message = "email must be between 6 to 50 characters")
     private String email;
+
+    @NotBlank(message = "password is mandatory")
     private String password;
 
+    @NotEmpty(message = "roles is mandatory")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLES")
     private Set<UserRoleEntity> roles;
