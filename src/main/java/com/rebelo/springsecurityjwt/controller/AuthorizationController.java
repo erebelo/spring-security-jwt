@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,9 +31,12 @@ public class AuthorizationController {
 
     private final AuthenticationService service;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationController.class);
+
     @Operation(summary = "POST Sign Up")
     @PostMapping(value = SIGN_UP_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserCreateRequest userCreateRequest) {
+        LOGGER.info("Signing up user");
         var response = service.signUp(userCreateRequest);
         return ResponseEntity.created(buildSignUpUri(response.getId())).body(response);
     }
@@ -39,6 +44,7 @@ public class AuthorizationController {
     @Operation(summary = "POST Authenticate")
     @PostMapping(value = AUTHENTICATE_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+        LOGGER.info("Authenticating user");
         return ResponseEntity.ok(service.authenticate(authenticationRequest));
     }
 }

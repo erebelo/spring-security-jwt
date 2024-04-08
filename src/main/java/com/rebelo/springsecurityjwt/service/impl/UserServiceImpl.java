@@ -12,6 +12,8 @@ import com.rebelo.springsecurityjwt.mapper.UserMapper;
 import com.rebelo.springsecurityjwt.repository.UserRepository;
 import com.rebelo.springsecurityjwt.service.UserService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,12 +32,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     private static final String INVALID_CREDENTIALS_ERROR_MESSAGE = "Data inconsistency: Invalid provided credentials";
     private static final String DUPLICATED_EMAIL_ERROR_MESSAGE = "Email already in use: %s";
     private static final String USER_NOT_FOUND_ERROR_MESSAGE = "User not found by %s: %s";
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        LOGGER.info("Loading user by username: {}", username);
         try {
             return this.findEntityByEmail(username);
         } catch (Exception e) {
@@ -45,18 +50,21 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public List<UserResponse> findAll() {
+        LOGGER.info("Getting all users");
         var userEntityList = repository.findAll();
         return mapper.entityListToResponseList(userEntityList);
     }
 
     @Override
     public UserResponse findById(Long id) {
+        LOGGER.info("Getting user by id: {}", id);
         var userEntity = validateIdentityById(id);
         return mapper.entityToResponse(userEntity);
     }
 
     @Override
     public UserResponse findByEmail(String email) {
+        LOGGER.info("Getting user by email: {}", email);
         var userEntity = validateIdentityByEmail(email);
         return mapper.entityToResponse(userEntity);
     }
@@ -64,6 +72,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public UserResponse insert(UserCreateRequest userCreateRequest) {
+        LOGGER.info("Inserting user");
         checkEmailDuplication(userCreateRequest.getEmail());
 
         var userEntity = mapper.createRequestToEntity(userCreateRequest);
@@ -76,6 +85,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public UserResponse update(Long id, UserRequest userRequest) {
+        LOGGER.info("Updating user");
         var userEntity = validateIdentityById(id);
         checkEmailDuplication(userRequest.getEmail());
 
@@ -88,6 +98,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public void delete(Long id) {
+        LOGGER.info("Deleting user");
         var userEntity = this.findEntityById(id);
         repository.delete(userEntity);
     }

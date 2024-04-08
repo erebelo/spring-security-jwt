@@ -7,6 +7,8 @@ import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import com.rebelo.springsecurityjwt.service.AuthenticationService;
 import com.rebelo.springsecurityjwt.service.UserService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,15 +26,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
+
     @Override
     @Transactional
     public UserResponse signUp(UserCreateRequest userCreateRequest) {
+        LOGGER.info("Signing up user");
         userCreateRequest.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
         return userService.insert(userCreateRequest);
     }
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+        LOGGER.info("Authenticating user");
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                 authenticationRequest.getPassword()));
 
