@@ -14,7 +14,7 @@
     <artifactId>spring-security-jwt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-security-jwt</name>
-    <description>Java project using Spring Boot and Spring Security frameworks for JWT Authentication and Authorization</description>
+    <description>Java project using Spring Boot framework, Spring Security for JWT Authentication and Authorization, and H2 database</description>
 
     <properties>
         <java.version>17</java.version>
