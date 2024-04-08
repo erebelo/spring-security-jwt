@@ -1,5 +1,5 @@
 # Spring Security JWT
-REST API project developed in Java using Spring Boot framework, Spring Security for JWT Authentication and Authorization, and H2 database
+REST API project developed in Java using Spring Boot framework, Spring Security for JWT Authentication and Authorization, and H2 database.
 
 ----------
 
