@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOGGER.info("Loading user by username: {}", username);
+        LOGGER.info("Loading user by username");
         try {
             return this.findEntityByEmail(username);
         } catch (Exception e) {
@@ -50,21 +50,21 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public List<UserResponse> findAll() {
-        LOGGER.info("Getting all users");
+        LOGGER.info("Finding all users");
         var userEntityList = repository.findAll();
         return mapper.entityListToResponseList(userEntityList);
     }
 
     @Override
     public UserResponse findById(Long id) {
-        LOGGER.info("Getting user by id: {}", id);
+        LOGGER.info("Finding user by id");
         var userEntity = validateIdentityById(id);
         return mapper.entityToResponse(userEntity);
     }
 
     @Override
     public UserResponse findByEmail(String email) {
-        LOGGER.info("Getting user by email: {}", email);
+        LOGGER.info("Finding user by email");
         var userEntity = validateIdentityByEmail(email);
         return mapper.entityToResponse(userEntity);
     }
@@ -98,17 +98,19 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public void delete(Long id) {
-        LOGGER.info("Deleting user");
+        LOGGER.info("Deleting user by id");
         var userEntity = this.findEntityById(id);
         repository.delete(userEntity);
     }
 
     public UserEntity findEntityById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND_ERROR_MESSAGE, "id", id)));
+        return repository.findById(id).orElseThrow(() ->
+                new NotFoundException(String.format(USER_NOT_FOUND_ERROR_MESSAGE, "id", id)));
     }
 
     public UserEntity findEntityByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND_ERROR_MESSAGE, "email", email)));
+        return repository.findByEmail(email).orElseThrow(() ->
+                new NotFoundException(String.format(USER_NOT_FOUND_ERROR_MESSAGE, "email", email)));
     }
 
     private UserEntity validateIdentityById(Long id) {

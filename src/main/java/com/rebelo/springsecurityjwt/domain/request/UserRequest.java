@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -27,4 +29,11 @@ public class UserRequest {
     @Size(min = 6, max = 50, message = "email must be between 6 to 50 characters")
     private String email;
 
+    @Override
+    public String toString() {
+        return "UserRequest{" +
+                "name='" + name + '\'' +
+                ", email='" + maskEmail(email) + '\'' +
+                '}';
+    }
 }

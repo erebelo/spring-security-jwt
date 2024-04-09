@@ -30,6 +30,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String extractUsername(String token) {
+        LOGGER.info("Extracting username");
         return extractClaim(token, Claims::getSubject);
     }
 

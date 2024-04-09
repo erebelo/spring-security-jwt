@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,4 +24,11 @@ public class AuthenticationRequest {
     @NotBlank(message = "password is mandatory")
     private String password;
 
+    @Override
+    public String toString() {
+        return "AuthenticationRequest{" +
+                "email='" + maskEmail(email) + '\'' +
+                ", password='*****'" +
+                '}';
+    }
 }

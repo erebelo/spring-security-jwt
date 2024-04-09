@@ -23,4 +23,11 @@ public class UserCreateRequest extends UserRequest {
     @Size(min = 5, max = 20, message = "password must be between 5 to 20 characters")
     private String password;
 
+    @Override
+    public String toString() {
+        return "UserCreateRequest{" +
+                super.toString() +
+                ", password='*****'" +
+                '}';
+    }
 }

@@ -24,6 +24,7 @@ import java.util.List;
 
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.FILTER_PATH;
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
+import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
 
 @RestController
 @AllArgsConstructor
@@ -52,21 +53,21 @@ public class UserController {
     @Operation(summary = "GET User by Email")
     @GetMapping(value = FILTER_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> findByEmail(@RequestParam("email") String email) {
-        LOGGER.info("Getting user by email: {}", email);
+        LOGGER.info("Getting user by email: {}", maskEmail(email));
         return ResponseEntity.ok(service.findByEmail(email));
     }
 
     @Operation(summary = "PUT User by Id")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> update(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
-        LOGGER.info("Updating user");
+        LOGGER.info("Updating user: {}", userRequest);
         return ResponseEntity.ok(service.update(id, userRequest));
     }
 
     @Operation(summary = "DELETE User by Id")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        LOGGER.info("Deleting user");
+        LOGGER.info("Deleting user by id: {}", id);
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
