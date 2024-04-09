@@ -57,7 +57,9 @@ public class GlobalExceptionHandler {
         String errorMessage = null;
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
         if (!ObjectUtils.isEmpty(violations)) {
-            List<String> messages = violations.stream().map(ConstraintViolation::getMessage).toList();
+            List<String> messages = violations.stream()
+                    .map(ConstraintViolation::getMessage)
+                    .toList();
             errorMessage = String.join(";", messages);
         }
 
