@@ -2,7 +2,7 @@ package com.rebelo.springsecurityjwt.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.util.ObjectUtils;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MaskUtil {
