@@ -7,321 +7,674 @@
 	},
 	"item": [
 		{
-			"name": "Health Check",
+			"name": "Localhost",
 			"item": [
 				{
-					"name": "Get Health Check",
-					"event": [
+					"name": "Health Check",
+					"item": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
+							"name": "Get Health Check",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/spring-security-jwt/health-check",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"health-check"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authorization",
+					"item": [
+						{
+							"name": "Sign up",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Eduardo\",\r\n    \"email\": \"eduardo@mail.com\",\r\n    \"password\": \"test123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/spring-security-jwt/authorization/sign-up",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"authorization",
+										"sign-up"
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/spring-security-jwt/health-check",
-							"protocol": "http",
-							"host": [
-								"localhost"
+							"name": "Authenticate",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (responseBody !== null && responseBody.trim() !== \"\") {\r",
+											"    var jsonData = JSON.parse(responseBody);\r",
+											"    var token = jsonData.token;\r",
+											"    if (token) {\r",
+											"        console.log(\"Token:\", token);\r",
+											"        postman.setEnvironmentVariable(\"token\", token);\r",
+											"    } else {\r",
+											"        console.log(\"No token retrieved\");\r",
+											"    }\r",
+											"} else {\r",
+											"    console.log(\"Response body is empty\");\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
 							],
-							"port": "8080",
-							"path": [
-								"spring-security-jwt",
-								"health-check"
-							]
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"eduardo@mail.com\",\r\n    \"password\": \"test123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/spring-security-jwt/authorization/authenticate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"authorization",
+										"authenticate"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Get All Users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/spring-security-jwt/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User by Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/spring-security-jwt/user/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User by Email",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/spring-security-jwt/user/filter?email=eduardo@mail.com",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user",
+										"filter"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "eduardo@mail.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Eduardo L D Rebelo\",\r\n    \"email\": \"eduardo2@mail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/spring-security-jwt/user/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/spring-security-jwt/user/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "Authorization",
+			"name": "AWS",
 			"item": [
 				{
-					"name": "Sign up",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Eduardo\",\r\n    \"email\": \"eduardo@mail.com\",\r\n    \"password\": \"test123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/spring-security-jwt/authorization/sign-up",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"spring-security-jwt",
-								"authorization",
-								"sign-up"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Authenticate",
-					"event": [
+					"name": "Health Check",
+					"item": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
+							"name": "Get Health Check",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://35.170.52.206:8080/spring-security-jwt/health-check",
+									"protocol": "http",
+									"host": [
+										"35",
+										"170",
+										"52",
+										"206"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"health-check"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authorization",
+					"item": [
+						{
+							"name": "Sign up",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Eduardo\",\r\n    \"email\": \"eduardo@mail.com\",\r\n    \"password\": \"test123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://35.170.52.206:8080/spring-security-jwt/authorization/sign-up",
+									"protocol": "http",
+									"host": [
+										"35",
+										"170",
+										"52",
+										"206"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"authorization",
+										"sign-up"
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if (responseBody !== null && responseBody.trim() !== \"\") {\r",
-									"    var jsonData = JSON.parse(responseBody);\r",
-									"    var token = jsonData.token;\r",
-									"    if (token) {\r",
-									"        console.log(\"Token:\", token);\r",
-									"        postman.setEnvironmentVariable(\"token\", token);\r",
-									"    } else {\r",
-									"        console.log(\"No token retrieved\");\r",
-									"    }\r",
-									"} else {\r",
-									"    console.log(\"Response body is empty\");\r",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"eduardo@mail.com\",\r\n    \"password\": \"test123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/spring-security-jwt/authorization/authenticate",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"spring-security-jwt",
-								"authorization",
-								"authenticate"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "User",
-			"item": [
-				{
-					"name": "Get All Users",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+							"name": "Authenticate",
+							"event": [
 								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (responseBody !== null && responseBody.trim() !== \"\") {\r",
+											"    var jsonData = JSON.parse(responseBody);\r",
+											"    var token = jsonData.token;\r",
+											"    if (token) {\r",
+											"        console.log(\"Token:\", token);\r",
+											"        postman.setEnvironmentVariable(\"token\", token);\r",
+											"    } else {\r",
+											"        console.log(\"No token retrieved\");\r",
+											"    }\r",
+											"} else {\r",
+											"    console.log(\"Response body is empty\");\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/spring-security-jwt/user",
-							"protocol": "http",
-							"host": [
-								"localhost"
 							],
-							"port": "8080",
-							"path": [
-								"spring-security-jwt",
-								"user"
-							]
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"eduardo@mail.com\",\r\n    \"password\": \"test123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://35.170.52.206:8080/spring-security-jwt/authorization/authenticate",
+									"protocol": "http",
+									"host": [
+										"35",
+										"170",
+										"52",
+										"206"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"authorization",
+										"authenticate"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Get User by Id",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
+					"name": "User",
+					"item": [
+						{
+							"name": "Get All Users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://35.170.52.206:8080/spring-security-jwt/user",
+									"protocol": "http",
+									"host": [
+										"35",
+										"170",
+										"52",
+										"206"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/spring-security-jwt/user/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"spring-security-jwt",
-								"user",
-								"1"
-							]
+						{
+							"name": "Get User by Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://35.170.52.206:8080/spring-security-jwt/user/2",
+									"protocol": "http",
+									"host": [
+										"35",
+										"170",
+										"52",
+										"206"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User by Email",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://35.170.52.206:8080/spring-security-jwt/user/filter?email=eduardo@mail.com",
+									"protocol": "http",
+									"host": [
+										"35",
+										"170",
+										"52",
+										"206"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user",
+										"filter"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "eduardo@mail.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Eduardo L D Rebelo\",\r\n    \"email\": \"eduardo2@mail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://35.170.52.206:8080/spring-security-jwt/user/2",
+									"protocol": "http",
+									"host": [
+										"35",
+										"170",
+										"52",
+										"206"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://35.170.52.206:8080/spring-security-jwt/user/2",
+									"protocol": "http",
+									"host": [
+										"35",
+										"170",
+										"52",
+										"206"
+									],
+									"port": "8080",
+									"path": [
+										"spring-security-jwt",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get User by Email",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/spring-security-jwt/user/filter?email=eduardo@mail.com",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"spring-security-jwt",
-								"user",
-								"filter"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "eduardo@mail.com"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update User",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Eduardo L D Rebelo\",\r\n    \"email\": \"eduardo2@mail.com\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/spring-security-jwt/user/2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"spring-security-jwt",
-								"user",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete by Id",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/spring-security-jwt/user/2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"spring-security-jwt",
-								"user",
-								"2"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		}
