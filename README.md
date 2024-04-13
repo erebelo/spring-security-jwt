@@ -18,7 +18,7 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 ----------
 
 ## Run App
-- Define the following environment variables: 'adminPassword' and 'secretKey' (size >= 256 bits)
+- Define the following environment variables: 'ADMIN_PASSWORD' and 'SECRET_KEY' (size >= 256 bits)
 - Run the SpringSecurityJwtApplication class as Java Application
 
 ----------
