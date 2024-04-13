@@ -28,7 +28,7 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 
 ----------
 
-## Demo
+## AWS Demo
 [Spring Security JWT][2]
 
 ----------
