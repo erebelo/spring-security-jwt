@@ -34,4 +34,4 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 ----------
 
 [1]: https://github.com/erebelo/spring-security-jwt/tree/main/collection
-[2]: http://35.170.52.206:8080/spring-security-jwt/swagger-ui/index.html
+[2]: http://jwt-api.erebelo.com/spring-security-jwt/swagger-ui/index.html
