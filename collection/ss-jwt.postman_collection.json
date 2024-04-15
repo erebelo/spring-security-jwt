@@ -364,15 +364,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://35.170.52.206:8080/spring-security-jwt/health-check",
+									"raw": "http://jwt-api.erebelo.com/spring-security-jwt/health-check",
 									"protocol": "http",
 									"host": [
-										"35",
-										"170",
-										"52",
-										"206"
+										"jwt-api",
+										"erebelo",
+										"com"
 									],
-									"port": "8080",
 									"path": [
 										"spring-security-jwt",
 										"health-check"
@@ -401,15 +399,13 @@
 									}
 								},
 								"url": {
-									"raw": "http://35.170.52.206:8080/spring-security-jwt/authorization/sign-up",
+									"raw": "http://jwt-api.erebelo.com/spring-security-jwt/authorization/sign-up",
 									"protocol": "http",
 									"host": [
-										"35",
-										"170",
-										"52",
-										"206"
+										"jwt-api",
+										"erebelo",
+										"com"
 									],
-									"port": "8080",
 									"path": [
 										"spring-security-jwt",
 										"authorization",
@@ -467,15 +463,13 @@
 									}
 								},
 								"url": {
-									"raw": "http://35.170.52.206:8080/spring-security-jwt/authorization/authenticate",
+									"raw": "http://jwt-api.erebelo.com/spring-security-jwt/authorization/authenticate",
 									"protocol": "http",
 									"host": [
-										"35",
-										"170",
-										"52",
-										"206"
+										"jwt-api",
+										"erebelo",
+										"com"
 									],
-									"port": "8080",
 									"path": [
 										"spring-security-jwt",
 										"authorization",
@@ -506,15 +500,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://35.170.52.206:8080/spring-security-jwt/user",
+									"raw": "http://jwt-api.erebelo.com/spring-security-jwt/user",
 									"protocol": "http",
 									"host": [
-										"35",
-										"170",
-										"52",
-										"206"
+										"jwt-api",
+										"erebelo",
+										"com"
 									],
-									"port": "8080",
 									"path": [
 										"spring-security-jwt",
 										"user"
@@ -539,15 +531,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://35.170.52.206:8080/spring-security-jwt/user/2",
+									"raw": "http://jwt-api.erebelo.com/spring-security-jwt/user/2",
 									"protocol": "http",
 									"host": [
-										"35",
-										"170",
-										"52",
-										"206"
+										"jwt-api",
+										"erebelo",
+										"com"
 									],
-									"port": "8080",
 									"path": [
 										"spring-security-jwt",
 										"user",
@@ -573,15 +563,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://35.170.52.206:8080/spring-security-jwt/user/filter?email=eduardo@mail.com",
+									"raw": "http://jwt-api.erebelo.com/spring-security-jwt/user/filter?email=eduardo@mail.com",
 									"protocol": "http",
 									"host": [
-										"35",
-										"170",
-										"52",
-										"206"
+										"jwt-api",
+										"erebelo",
+										"com"
 									],
-									"port": "8080",
 									"path": [
 										"spring-security-jwt",
 										"user",
@@ -622,15 +610,13 @@
 									}
 								},
 								"url": {
-									"raw": "http://35.170.52.206:8080/spring-security-jwt/user/2",
+									"raw": "http://jwt-api.erebelo.com/spring-security-jwt/user/2",
 									"protocol": "http",
 									"host": [
-										"35",
-										"170",
-										"52",
-										"206"
+										"jwt-api",
+										"erebelo",
+										"com"
 									],
-									"port": "8080",
 									"path": [
 										"spring-security-jwt",
 										"user",
@@ -656,15 +642,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://35.170.52.206:8080/spring-security-jwt/user/2",
+									"raw": "http://jwt-api.erebelo.com/spring-security-jwt/user/2",
 									"protocol": "http",
 									"host": [
-										"35",
-										"170",
-										"52",
-										"206"
+										"jwt-api",
+										"erebelo",
+										"com"
 									],
-									"port": "8080",
 									"path": [
 										"spring-security-jwt",
 										"user",
