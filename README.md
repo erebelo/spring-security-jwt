@@ -35,7 +35,7 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 
 ## AWS Demo
 
-[Spring Security JWT](http://api.erebelo.com/spring-security-jwt/swagger-ui/index.html)
+[Spring Security JWT](http://api.erebelo.com:81/spring-security-jwt/swagger-ui/index.html)
 
 ---
 
