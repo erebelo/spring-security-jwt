@@ -53,6 +53,48 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "[nginx] Get Health Check",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://jwt.localhost/spring-security-jwt/health-check",
+									"protocol": "http",
+									"host": [
+										"jwt",
+										"localhost"
+									],
+									"path": [
+										"spring-security-jwt",
+										"health-check"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
