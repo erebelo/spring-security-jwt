@@ -25,8 +25,8 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 
 ## AWS Demo
 
-[Spring Security JWT](http://jwt.erebelo.com/spring-security-jwt/swagger-ui/index.html)
+[Spring Security JWT](https://jwt.erebelo.com/spring-security-jwt/swagger-ui/index.html)
 
 ## AWS Deployment
 
-Follow the [AWS Docker](https://github.com/erebelo/aws-docker/tree/main/java-app) guide to deploy a **Java App** instance.
+Follow the [AWS Docker](https://github.com/erebelo/aws-docker/tree/main/java-app) guide to deploy a **Java App** instance with reverse proxy setup using HTTPS with a valid SSL/TLS certificate.

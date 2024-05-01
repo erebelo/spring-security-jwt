@@ -406,8 +406,8 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://jwt.erebelo.com/spring-security-jwt/health-check",
-									"protocol": "http",
+									"raw": "https://jwt.erebelo.com/spring-security-jwt/health-check",
+									"protocol": "https",
 									"host": [
 										"jwt",
 										"erebelo",
@@ -441,8 +441,8 @@
 									}
 								},
 								"url": {
-									"raw": "http://jwt.erebelo.com/spring-security-jwt/authorization/sign-up",
-									"protocol": "http",
+									"raw": "https://jwt.erebelo.com/spring-security-jwt/authorization/sign-up",
+									"protocol": "https",
 									"host": [
 										"jwt",
 										"erebelo",
@@ -505,8 +505,8 @@
 									}
 								},
 								"url": {
-									"raw": "http://jwt.erebelo.com/spring-security-jwt/authorization/authenticate",
-									"protocol": "http",
+									"raw": "https://jwt.erebelo.com/spring-security-jwt/authorization/authenticate",
+									"protocol": "https",
 									"host": [
 										"jwt",
 										"erebelo",
@@ -542,8 +542,8 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://jwt.erebelo.com/spring-security-jwt/user",
-									"protocol": "http",
+									"raw": "https://jwt.erebelo.com/spring-security-jwt/user",
+									"protocol": "https",
 									"host": [
 										"jwt",
 										"erebelo",
@@ -573,8 +573,8 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://jwt.erebelo.com/spring-security-jwt/user/2",
-									"protocol": "http",
+									"raw": "https://jwt.erebelo.com/spring-security-jwt/user/2",
+									"protocol": "https",
 									"host": [
 										"jwt",
 										"erebelo",
@@ -605,8 +605,8 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://jwt.erebelo.com/spring-security-jwt/user/filter?email=eduardo@mail.com",
-									"protocol": "http",
+									"raw": "https://jwt.erebelo.com/spring-security-jwt/user/filter?email=eduardo@mail.com",
+									"protocol": "https",
 									"host": [
 										"jwt",
 										"erebelo",
@@ -652,8 +652,8 @@
 									}
 								},
 								"url": {
-									"raw": "http://jwt.erebelo.com/spring-security-jwt/user/2",
-									"protocol": "http",
+									"raw": "https://jwt.erebelo.com/spring-security-jwt/user/2",
+									"protocol": "https",
 									"host": [
 										"jwt",
 										"erebelo",
@@ -684,8 +684,8 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://jwt.erebelo.com/spring-security-jwt/user/2",
-									"protocol": "http",
+									"raw": "https://jwt.erebelo.com/spring-security-jwt/user/2",
+									"protocol": "https",
 									"host": [
 										"jwt",
 										"erebelo",
