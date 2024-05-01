@@ -1,6 +1,6 @@
 # Spring Security JWT
 
-REST API project developed in Java using Spring Boot framework, Spring Security for JWT Authentication and Authorization, and H2 database.
+REST API project developed in Java using Spring Boot 3 framework, Spring Security 6 for JWT Authentication and Authorization, and H2 database.
 
 ## Features
 
@@ -12,6 +12,7 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 
 - Java 17
 - Spring Boot 3.2.4
+- Spring Security 6.2.3
 - Apache Maven 3.8.6
 
 ## Run App
@@ -29,4 +30,4 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 
 ## AWS Deployment
 
-Follow the [AWS Docker](https://github.com/erebelo/aws-docker/tree/main/java-app) guide to deploy a **Java App** instance and how to set up **Nginx** as a reverse proxy with a valid SSL/TLS (HTTPS) certificate.
+Follow the [AWS Docker](https://github.com/erebelo/aws-docker/tree/main) guide to deploy a **Java App** instance and how to set up **Nginx** as a reverse proxy with a valid SSL/TLS (HTTPS) certificate.
