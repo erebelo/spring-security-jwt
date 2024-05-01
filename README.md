@@ -4,7 +4,7 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 
 ## Features
 
-- Token based Authentication using JSON Web Token (JWT)
+- Token-based Authentication using JSON Web Token (JWT)
 - Role-based authorization
 - Encoding password with BCrypt algorithm
 
@@ -29,4 +29,4 @@ REST API project developed in Java using Spring Boot framework, Spring Security 
 
 ## AWS Deployment
 
-Follow the [AWS Docker](https://github.com/erebelo/aws-docker/tree/main/java-app) guide to deploy a **Java App** instance with reverse proxy setup using HTTPS with a valid SSL/TLS certificate.
+Follow the [AWS Docker](https://github.com/erebelo/aws-docker/tree/main/java-app) guide to deploy a **Java App** instance and how to set up **Nginx** as a reverse proxy with a valid SSL/TLS (HTTPS) certificate.
