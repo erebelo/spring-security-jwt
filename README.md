@@ -1,6 +1,6 @@
 # Spring Security JWT
 
-REST API project developed in Java using Spring Boot 3 framework, Spring Security 6 for JWT Authentication and Authorization, and H2 database.
+REST API project developed in Java using Spring Boot 3, Spring Security 6 for JWT Authentication and Authorization, and H2 database.
 
 ## Features
 
