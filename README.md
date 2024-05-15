@@ -30,4 +30,4 @@ REST API project developed in Java using Spring Boot 3, Spring Security 6 for JW
 
 ## AWS Deployment
 
-Follow the [AWS Docker](https://github.com/erebelo/aws-docker/tree/main) guide to deploy a **Java App** instance and how to set up **Nginx** as a reverse proxy with a valid SSL/TLS (HTTPS) certificate.
+Follow the [AWS Docker](https://github.com/erebelo/aws-docker/tree/main) guide to deploy a **Java App** instance and how to set up **Nginx** as a reverse proxy with a valid Wildcard SSL/TLS certificate.
