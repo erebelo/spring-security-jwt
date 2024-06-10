@@ -148,12 +148,11 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"if (responseBody !== null && responseBody.trim() !== \"\") {\r",
-											"    var jsonData = JSON.parse(responseBody);\r",
+											"var jsonData = pm.response.json();\r",
+											"if (jsonData !== null) {\r",
 											"    var token = jsonData.token;\r",
 											"    if (token) {\r",
-											"        console.log(\"Token:\", token);\r",
-											"        postman.setEnvironmentVariable(\"token\", token);\r",
+											"        pm.environment.set(\"token\", token);\r",
 											"    } else {\r",
 											"        console.log(\"No token retrieved\");\r",
 											"    }\r",
@@ -474,12 +473,11 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"if (responseBody !== null && responseBody.trim() !== \"\") {\r",
-											"    var jsonData = JSON.parse(responseBody);\r",
+											"var jsonData = pm.response.json();\r",
+											"if (jsonData !== null) {\r",
 											"    var token = jsonData.token;\r",
 											"    if (token) {\r",
-											"        console.log(\"Token:\", token);\r",
-											"        postman.setEnvironmentVariable(\"token\", token);\r",
+											"        pm.environment.set(\"token\", token);\r",
 											"    } else {\r",
 											"        console.log(\"No token retrieved\");\r",
 											"    }\r",
