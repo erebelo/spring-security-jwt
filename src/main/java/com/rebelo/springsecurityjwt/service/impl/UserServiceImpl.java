@@ -11,7 +11,7 @@ import com.rebelo.springsecurityjwt.exception.model.UnprocessableEntityException
 import com.rebelo.springsecurityjwt.mapper.UserMapper;
 import com.rebelo.springsecurityjwt.repository.UserRepository;
 import com.rebelo.springsecurityjwt.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +26,7 @@ import java.util.Objects;
 import static com.rebelo.springsecurityjwt.util.AuthorizationUtil.getAuthenticatedUsername;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository repository;
@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private static final String USER_NOT_FOUND_ERROR_MESSAGE = "User not found by %s: %s";
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOGGER.info("Loading user by username");
         try {
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponse> findAll() {
         LOGGER.info("Finding all users");
         var userEntityList = repository.findAll();
@@ -56,6 +58,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse findById(Long id) {
         LOGGER.info("Finding user by id");
         var userEntity = validateIdentityById(id);
@@ -63,6 +66,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse findByEmail(String email) {
         LOGGER.info("Finding user by email");
         var userEntity = validateIdentityByEmail(email);

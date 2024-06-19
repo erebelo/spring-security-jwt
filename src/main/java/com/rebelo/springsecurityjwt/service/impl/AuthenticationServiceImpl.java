@@ -6,7 +6,7 @@ import com.rebelo.springsecurityjwt.domain.response.AuthenticationResponse;
 import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import com.rebelo.springsecurityjwt.service.AuthenticationService;
 import com.rebelo.springsecurityjwt.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserService userService;

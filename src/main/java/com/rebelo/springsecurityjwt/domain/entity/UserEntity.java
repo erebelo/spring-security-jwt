@@ -14,9 +14,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +31,8 @@ import java.util.Set;
 
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ROLE_PREFIX;
 
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @EqualsAndHashCode

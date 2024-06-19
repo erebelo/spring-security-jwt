@@ -6,7 +6,7 @@ import com.rebelo.springsecurityjwt.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
 import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(USER_PATH)
 @Tag(name = "User API")
 public class UserController {

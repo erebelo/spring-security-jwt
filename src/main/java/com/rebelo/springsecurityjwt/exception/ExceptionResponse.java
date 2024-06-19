@@ -2,10 +2,14 @@ package com.rebelo.springsecurityjwt.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExceptionResponse {
