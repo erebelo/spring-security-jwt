@@ -2,7 +2,6 @@ package com.rebelo.springsecurityjwt.exception;
 
 import com.rebelo.springsecurityjwt.exception.model.NotFoundException;
 import com.rebelo.springsecurityjwt.exception.model.UnprocessableEntityException;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Set;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -53,17 +52,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException exception) {
         LOGGER.error("ConstraintViolationException thrown:", exception);
+        return parseExceptionMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
 
-        String errorMessage = null;
-        Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
-        if (!ObjectUtils.isEmpty(violations)) {
-            List<String> messages = violations.stream()
-                    .map(ConstraintViolation::getMessage)
-                    .toList();
-            errorMessage = String.join(";", messages);
-        }
-
-        return parseExceptionMessage(HttpStatus.BAD_REQUEST, errorMessage);
+    @ResponseBody
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ExceptionResponse> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
+        LOGGER.error("HttpMediaTypeNotSupportedException thrown:", exception);
+        return parseExceptionMessage(HttpStatus.UNSUPPORTED_MEDIA_TYPE, exception.getMessage());
     }
 
     @ResponseBody
