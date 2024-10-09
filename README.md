@@ -11,9 +11,14 @@ REST API project developed in Java using Spring Boot 3, Spring Security 6 for JW
 ## Requirements
 
 - Java 17
-- Spring Boot 3.2.4
-- Spring Security 6.2.3
+- Spring Boot 3.3.4
+- Spring Security 6.3.3
 - Apache Maven 3.8.6
+
+## References
+
+- This project utilizes the [spring-common-parent](https://github.com/erebelo/spring-common-parent) to manage the Spring Boot version and provide common configurations for plugins and formatting
+- Git hooks are set up for code formatting using [Git Hooks Setup](https://github.com/erebelo/spring-security-jwt/tree/main/git-hooks)
 
 ## Run App
 
