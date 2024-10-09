@@ -1,15 +1,14 @@
 package com.rebelo.springsecurityjwt.mapper;
 
+import static org.mapstruct.ReportingPolicy.WARN;
+
 import com.rebelo.springsecurityjwt.domain.entity.UserEntity;
 import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
 import com.rebelo.springsecurityjwt.domain.request.UserRequest;
 import com.rebelo.springsecurityjwt.domain.response.UserResponse;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
-
-import static org.mapstruct.ReportingPolicy.WARN;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = WARN)
 public interface UserMapper {
@@ -28,4 +27,3 @@ public interface UserMapper {
     UserEntity requestToEntity(UserRequest userRequest, UserEntity userEntity);
 
 }
-

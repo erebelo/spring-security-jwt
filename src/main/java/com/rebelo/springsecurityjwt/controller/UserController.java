@@ -1,11 +1,16 @@
 package com.rebelo.springsecurityjwt.controller;
 
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.FILTER_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
+import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
+
 import com.rebelo.springsecurityjwt.domain.request.UserRequest;
 import com.rebelo.springsecurityjwt.domain.response.UserResponse;
 import com.rebelo.springsecurityjwt.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.FILTER_PATH;
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
-import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
 
 @RestController
 @RequiredArgsConstructor

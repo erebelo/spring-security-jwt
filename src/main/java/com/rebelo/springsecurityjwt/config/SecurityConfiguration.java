@@ -1,6 +1,14 @@
 package com.rebelo.springsecurityjwt.config;
 
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ANY_PATH_SUFFIX;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHORIZATION_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.HEALTH_CHECK_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ROLE_PREFIX;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,15 +32,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collections;
-
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ANY_PATH_SUFFIX;
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHORIZATION_PATH;
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.HEALTH_CHECK_PATH;
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ROLE_PREFIX;
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -44,22 +43,19 @@ public class SecurityConfiguration {
             HEALTH_CHECK_PATH, AUTHORIZATION_PATH + ANY_PATH_SUFFIX};
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
-        return httpSecurity
-                .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(toH2Console()).permitAll()
-                        .requestMatchers(PUBLIC_WHITELIST).permitAll()
-                        .requestMatchers(HttpMethod.DELETE).hasRole(RoleEnum.ADMIN.getCode())
-                        // hasAuthority is more flexible for fine-grained permissions
-                        .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(ROLE_PREFIX + RoleEnum.ADMIN.getCode())
-                        .anyRequest().authenticated())
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthFilter)
+            throws Exception {
+        return httpSecurity.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(
+                        auth -> auth.requestMatchers(toH2Console()).permitAll().requestMatchers(PUBLIC_WHITELIST)
+                                .permitAll().requestMatchers(HttpMethod.DELETE).hasRole(RoleEnum.ADMIN.getCode())
+                                // hasAuthority is more flexible for fine-grained permissions
+                                .requestMatchers(HttpMethod.GET, USER_PATH)
+                                .hasAuthority(ROLE_PREFIX + RoleEnum.ADMIN.getCode()).anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
 
     @Bean

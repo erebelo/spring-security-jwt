@@ -1,5 +1,10 @@
 package com.rebelo.springsecurityjwt.controller;
 
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHENTICATE_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHORIZATION_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.SIGN_UP_PATH;
+import static com.rebelo.springsecurityjwt.util.UriUtil.buildSignUpUri;
+
 import com.rebelo.springsecurityjwt.domain.request.AuthenticationRequest;
 import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
 import com.rebelo.springsecurityjwt.domain.response.AuthenticationResponse;
@@ -17,11 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHENTICATE_PATH;
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHORIZATION_PATH;
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.SIGN_UP_PATH;
-import static com.rebelo.springsecurityjwt.util.UriUtil.buildSignUpUri;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +43,8 @@ public class AuthorizationController {
 
     @Operation(summary = "POST Authenticate")
     @PostMapping(value = AUTHENTICATE_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<AuthenticationResponse> authenticate(
+            @Valid @RequestBody AuthenticationRequest authenticationRequest) {
         LOGGER.info("Authenticating user: {}", authenticationRequest);
         return ResponseEntity.ok(service.authenticate(authenticationRequest));
     }

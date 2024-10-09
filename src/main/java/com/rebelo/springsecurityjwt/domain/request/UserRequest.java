@@ -1,5 +1,7 @@
 package com.rebelo.springsecurityjwt.domain.request;
 
+import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
@@ -10,8 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
 
 @Getter
 @Setter
@@ -33,9 +33,6 @@ public class UserRequest {
 
     @Override
     public String toString() {
-        return "UserRequest{" +
-                "name='" + name + '\'' +
-                ", email='" + maskEmail(email) + '\'' +
-                '}';
+        return "UserRequest{" + "name='" + name + '\'' + ", email='" + maskEmail(email) + '\'' + '}';
     }
 }

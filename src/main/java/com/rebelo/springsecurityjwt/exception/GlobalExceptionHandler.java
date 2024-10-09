@@ -3,6 +3,7 @@ package com.rebelo.springsecurityjwt.exception;
 import com.rebelo.springsecurityjwt.exception.model.NotFoundException;
 import com.rebelo.springsecurityjwt.exception.model.UnprocessableEntityException;
 import jakarta.validation.ConstraintViolationException;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -50,28 +49,32 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException exception) {
+    public ResponseEntity<ExceptionResponse> handleConstraintViolationException(
+            ConstraintViolationException exception) {
         LOGGER.error("ConstraintViolationException thrown:", exception);
         return parseExceptionMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<ExceptionResponse> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
+    public ResponseEntity<ExceptionResponse> handleHttpMediaTypeNotSupportedException(
+            HttpMediaTypeNotSupportedException exception) {
         LOGGER.error("HttpMediaTypeNotSupportedException thrown:", exception);
         return parseExceptionMessage(HttpStatus.UNSUPPORTED_MEDIA_TYPE, exception.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+    public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException exception) {
         LOGGER.error("HttpMessageNotReadableException thrown:", exception);
         return parseExceptionMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ExceptionResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+    public ResponseEntity<ExceptionResponse> handleHttpRequestMethodNotSupportedException(
+            HttpRequestMethodNotSupportedException exception) {
         LOGGER.error("HttpRequestMethodNotSupportedException thrown:", exception);
 
         String errorMessage = exception.getMessage();
@@ -85,16 +88,14 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException exception) {
         LOGGER.error("MethodArgumentNotValidException thrown:", exception);
 
         String errorMessage = null;
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         if (!fieldErrors.isEmpty()) {
-            errorMessage = fieldErrors.stream()
-                    .map(FieldError::getDefaultMessage)
-                    .toList()
-                    .toString();
+            errorMessage = fieldErrors.stream().map(FieldError::getDefaultMessage).toList().toString();
         }
 
         return parseExceptionMessage(HttpStatus.BAD_REQUEST, errorMessage);
@@ -120,9 +121,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleAuthenticationCredentialsNotFoundException(AuthenticationCredentialsNotFoundException exception) {
+    public ResponseEntity<ExceptionResponse> handleAuthenticationCredentialsNotFoundException(
+            AuthenticationCredentialsNotFoundException exception) {
         LOGGER.error("AuthenticationCredentialsNotFoundException thrown:", exception);
-        return parseExceptionMessage(HttpStatus.UNAUTHORIZED, "Authentication credentials not found: " + exception.getMessage());
+        return parseExceptionMessage(HttpStatus.UNAUTHORIZED,
+                "Authentication credentials not found: " + exception.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -132,7 +135,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnprocessableEntityException.class)
-    public ResponseEntity<ExceptionResponse> handleUnprocessableEntityException(UnprocessableEntityException exception) {
+    public ResponseEntity<ExceptionResponse> handleUnprocessableEntityException(
+            UnprocessableEntityException exception) {
         LOGGER.error("UnprocessableEntityException thrown:", exception);
         return parseExceptionMessage(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
     }
@@ -141,6 +145,7 @@ public class GlobalExceptionHandler {
         var errorHttpStatus = ObjectUtils.isEmpty(httpStatus) ? HttpStatus.INTERNAL_SERVER_ERROR : httpStatus;
         var errorMessage = ObjectUtils.isEmpty(message) ? "No defined message" : message;
 
-        return ResponseEntity.status(httpStatus).body(new ExceptionResponse(errorHttpStatus, errorMessage, System.currentTimeMillis()));
+        return ResponseEntity.status(httpStatus)
+                .body(new ExceptionResponse(errorHttpStatus, errorMessage, System.currentTimeMillis()));
     }
 }

@@ -1,22 +1,20 @@
 package com.rebelo.springsecurityjwt.domain.enumeration;
 
 import com.rebelo.springsecurityjwt.domain.enumeration.type.EnumCodeValueType;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
 @ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum RoleEnum implements EnumCodeValueType {
 
-    USER("USER", "Regular user"),
-    ADMIN("ADMIN", "Admin user");
+    USER("USER", "Regular user"), ADMIN("ADMIN", "Admin user");
 
     private static final Map<String, RoleEnum> ENUM_MAP;
 

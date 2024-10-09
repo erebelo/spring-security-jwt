@@ -27,9 +27,6 @@ public class UserCreateRequest extends UserRequest {
 
     @Override
     public String toString() {
-        return "UserCreateRequest{" +
-                super.toString() +
-                ", password='*****'" +
-                '}';
+        return "UserCreateRequest{" + super.toString() + ", password='*****'" + '}';
     }
 }

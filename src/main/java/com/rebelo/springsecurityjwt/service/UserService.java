@@ -3,7 +3,6 @@ package com.rebelo.springsecurityjwt.service;
 import com.rebelo.springsecurityjwt.domain.request.UserCreateRequest;
 import com.rebelo.springsecurityjwt.domain.request.UserRequest;
 import com.rebelo.springsecurityjwt.domain.response.UserResponse;
-
 import java.util.List;
 
 public interface UserService {

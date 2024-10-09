@@ -5,17 +5,16 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -57,11 +56,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(getSignKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        return Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload();
     }
 
     private boolean isTokenExpired(String token) {
@@ -69,14 +64,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private String createToken(Map<String, Object> extraClaims, String username) {
-        return Jwts.builder()
-                .issuer("spring-security-filter")
-                .claims(extraClaims)
-                .subject(username)
+        return Jwts.builder().issuer("spring-security-filter").claims(extraClaims).subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(getSignKey())
-                .compact();
+                .expiration(new Date(System.currentTimeMillis() + expirationTime)).signWith(getSignKey()).compact();
     }
 
     private SecretKey getSignKey() {
