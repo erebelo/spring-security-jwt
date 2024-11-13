@@ -11,8 +11,8 @@ REST API project developed in Java using Spring Boot 3, Spring Security 6 for JW
 ## Requirements
 
 - Java 17
-- Spring Boot 3.3.5
-- Spring Security 6.3.3
+- Spring Boot 3.x.x
+- Spring Security 6.x.x
 - Apache Maven 3.8.6
 
 ## Libraries
