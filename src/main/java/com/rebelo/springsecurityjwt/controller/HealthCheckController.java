@@ -22,7 +22,7 @@ public class HealthCheckController {
     @Operation(summary = "GET Health Check")
     @GetMapping(produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getHealthCheck() {
-        LOGGER.info("Getting health check");
+        LOGGER.info("GET {}", HEALTH_CHECK_PATH);
         return ResponseEntity.ok("Spring Security JWT application is up and running");
     }
 }

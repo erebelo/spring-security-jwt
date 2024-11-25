@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "bc3aee78-fb2a-4e83-a761-6c570cc62bae",
+		"_postman_id": "780be694-1b5d-488d-b383-3c587c853e86",
 		"name": "Spring Security JWT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "3559566"
+		"_exporter_id": "16363964"
 	},
 	"item": [
 		{
@@ -196,10 +196,10 @@
 					]
 				},
 				{
-					"name": "User",
+					"name": "Users",
 					"item": [
 						{
-							"name": "Get All Users",
+							"name": "Get Users",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -214,7 +214,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/spring-security-jwt/user",
+									"raw": "http://localhost:8080/spring-security-jwt/users",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -222,7 +222,7 @@
 									"port": "8080",
 									"path": [
 										"spring-security-jwt",
-										"user"
+										"users"
 									]
 								}
 							},
@@ -244,7 +244,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/spring-security-jwt/user/2",
+									"raw": "http://localhost:8080/spring-security-jwt/users/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -252,7 +252,7 @@
 									"port": "8080",
 									"path": [
 										"spring-security-jwt",
-										"user",
+										"users",
 										"2"
 									]
 								}
@@ -275,7 +275,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/spring-security-jwt/user/filter?email=eduardo@mail.com",
+									"raw": "http://localhost:8080/spring-security-jwt/users/filter?email=eduardo@mail.com",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -283,7 +283,7 @@
 									"port": "8080",
 									"path": [
 										"spring-security-jwt",
-										"user",
+										"users",
 										"filter"
 									],
 									"query": [
@@ -321,7 +321,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/spring-security-jwt/user/2",
+									"raw": "http://localhost:8080/spring-security-jwt/users/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -329,7 +329,7 @@
 									"port": "8080",
 									"path": [
 										"spring-security-jwt",
-										"user",
+										"users",
 										"2"
 									]
 								}
@@ -352,7 +352,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/spring-security-jwt/user/2",
+									"raw": "http://localhost:8080/spring-security-jwt/users/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -360,7 +360,7 @@
 									"port": "8080",
 									"path": [
 										"spring-security-jwt",
-										"user",
+										"users",
 										"2"
 									]
 								}
@@ -522,10 +522,10 @@
 					]
 				},
 				{
-					"name": "User",
+					"name": "Users",
 					"item": [
 						{
-							"name": "Get All Users",
+							"name": "Get Users",
 							"request": {
 								"auth": {
 									"type": "bearer",

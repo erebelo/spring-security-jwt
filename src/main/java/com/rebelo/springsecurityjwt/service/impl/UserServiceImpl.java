@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOGGER.info("Loading user by username");
+        LOGGER.info("Loading user by username: {}", username);
         try {
             return this.findEntityByEmail(username);
         } catch (Exception e) {
@@ -51,59 +51,69 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional(readOnly = true)
     public List<UserResponse> findAll() {
-        LOGGER.info("Finding all users");
+        LOGGER.info("Fetching all users");
         var userEntityList = repository.findAll();
+
+        LOGGER.info("Users successfully retrieved: {}", userEntityList);
         return mapper.entityListToResponseList(userEntityList);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserResponse findById(Long id) {
-        LOGGER.info("Finding user by id");
+        LOGGER.info("Fetching user with id: {}", id);
         var userEntity = validateIdentityById(id);
+
+        LOGGER.info("User successfully retrieved: {}", userEntity);
         return mapper.entityToResponse(userEntity);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserResponse findByEmail(String email) {
-        LOGGER.info("Finding user by email");
+        LOGGER.info("Fetching user with email: {}", email);
         var userEntity = validateIdentityByEmail(email);
+
+        LOGGER.info("User successfully retrieved: {}", userEntity);
         return mapper.entityToResponse(userEntity);
     }
 
     @Override
     @Transactional
     public UserResponse insert(UserCreateRequest userCreateRequest) {
-        LOGGER.info("Inserting user");
+        LOGGER.info("Creating user");
         checkEmailDuplication(userCreateRequest.getEmail());
 
         var userEntity = mapper.createRequestToEntity(userCreateRequest);
         userEntity.addRole(DbLoaderConfiguration.getRoleByName(RoleEnum.USER));
-
         userEntity = repository.save(userEntity);
+
+        LOGGER.info("User created successfully: {}", userEntity);
         return mapper.entityToResponse(userEntity);
     }
 
     @Override
     @Transactional
     public UserResponse update(Long id, UserRequest userRequest) {
-        LOGGER.info("Updating user");
+        LOGGER.info("Updating user with id: {}", id);
         var userEntity = validateIdentityById(id);
         checkEmailDuplication(userRequest.getEmail());
 
         var newUserEntity = mapper.requestToEntity(userRequest, userEntity);
-
         newUserEntity = repository.save(newUserEntity);
+
+        LOGGER.info("User updated successfully: {}", newUserEntity);
         return mapper.entityToResponse(newUserEntity);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        LOGGER.info("Deleting user by id");
+        LOGGER.info("Deleting user with id: {}", id);
         var userEntity = this.findEntityById(id);
+
         repository.delete(userEntity);
+        LOGGER.info("User deleted successfully");
     }
 
     public UserEntity findEntityById(Long id) {

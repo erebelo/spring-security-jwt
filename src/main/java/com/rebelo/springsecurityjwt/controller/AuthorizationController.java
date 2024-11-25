@@ -36,8 +36,9 @@ public class AuthorizationController {
     @Operation(summary = "POST Sign Up")
     @PostMapping(value = SIGN_UP_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserCreateRequest userCreateRequest) {
-        LOGGER.info("Signing up user: {}", userCreateRequest);
+        LOGGER.info("POST {}", AUTHORIZATION_PATH + SIGN_UP_PATH);
         var response = service.signUp(userCreateRequest);
+
         return ResponseEntity.created(buildSignUpUri(response.getId())).body(response);
     }
 
@@ -45,7 +46,7 @@ public class AuthorizationController {
     @PostMapping(value = AUTHENTICATE_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponse> authenticate(
             @Valid @RequestBody AuthenticationRequest authenticationRequest) {
-        LOGGER.info("Authenticating user: {}", authenticationRequest);
+        LOGGER.info("POST {}", AUTHORIZATION_PATH + AUTHENTICATE_PATH);
         return ResponseEntity.ok(service.authenticate(authenticationRequest));
     }
 }

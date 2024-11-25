@@ -1,10 +1,9 @@
 package com.rebelo.springsecurityjwt.constant;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class BusinessConstant {
+@UtilityClass
+public class BusinessConstant {
 
     public static final String ROLE_PREFIX = "ROLE_";
     public static final String ANY_PATH_SUFFIX = "/**";
@@ -12,7 +11,7 @@ public final class BusinessConstant {
     public static final String AUTHORIZATION_PATH = "/authorization";
     public static final String SIGN_UP_PATH = "/sign-up";
     public static final String AUTHENTICATE_PATH = "/authenticate";
-    public static final String USER_PATH = "/user";
+    public static final String USERS_PATH = "/users";
     public static final String FILTER_PATH = "/filter";
 
 }

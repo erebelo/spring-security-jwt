@@ -1,11 +1,10 @@
 package com.rebelo.springsecurityjwt.util;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 import org.springframework.util.ObjectUtils;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MaskUtil {
+@UtilityClass
+public class MaskUtil {
 
     public static String maskEmail(String email) {
         if (!ObjectUtils.isEmpty(email)) {

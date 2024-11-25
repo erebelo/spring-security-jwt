@@ -1,6 +1,7 @@
 package com.rebelo.springsecurityjwt.domain.entity;
 
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ROLE_PREFIX;
+import static com.rebelo.springsecurityjwt.util.MaskUtil.maskEmail;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,19 +23,15 @@ import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Getter
-@Setter
-@Builder
+@Data
 @Entity
-@EqualsAndHashCode
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "USERS")
@@ -103,5 +100,11 @@ public class UserEntity implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" + "id=" + id + ", name='" + name + '\'' + ", email='" + maskEmail(email) + '\''
+                + ", password='*****'" + ", roles='*****'" + '}';
     }
 }

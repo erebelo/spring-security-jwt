@@ -4,7 +4,7 @@ import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ANY_PATH_SU
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.AUTHORIZATION_PATH;
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.HEALTH_CHECK_PATH;
 import static com.rebelo.springsecurityjwt.constant.BusinessConstant.ROLE_PREFIX;
-import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USER_PATH;
+import static com.rebelo.springsecurityjwt.constant.BusinessConstant.USERS_PATH;
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
@@ -50,7 +50,7 @@ public class SecurityConfiguration {
                         auth -> auth.requestMatchers(toH2Console()).permitAll().requestMatchers(PUBLIC_WHITELIST)
                                 .permitAll().requestMatchers(HttpMethod.DELETE).hasRole(RoleEnum.ADMIN.getCode())
                                 // hasAuthority is more flexible for fine-grained permissions
-                                .requestMatchers(HttpMethod.GET, USER_PATH)
+                                .requestMatchers(HttpMethod.GET, USERS_PATH)
                                 .hasAuthority(ROLE_PREFIX + RoleEnum.ADMIN.getCode()).anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
