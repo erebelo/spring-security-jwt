@@ -12,16 +12,18 @@
     <artifactId>spring-security-jwt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-security-jwt</name>
-    <description>Java project using Spring Boot, Spring Security for JWT Authentication and Authorization, and H2 database</description>
+    <description>Java project using Spring Boot, Spring Security for JWT Authentication and Authorization, and H2
+        database
+    </description>
 
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jjwt.version>0.12.3</jjwt.version>
+        <springdoc.openapi.version>2.3.0</springdoc.openapi.version>
         <lombok.version>1.18.32</lombok.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <springdoc.openapi.version>2.3.0</springdoc.openapi.version>
     </properties>
 
     <dependencies>
@@ -63,6 +65,11 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency> <!--Swagger-->
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.openapi.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -72,11 +79,6 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc.openapi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
