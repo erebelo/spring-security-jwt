@@ -298,7 +298,7 @@
 							"response": []
 						},
 						{
-							"name": "Update User",
+							"name": "Update User by Id",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -628,7 +628,7 @@
 							"response": []
 						},
 						{
-							"name": "Update User",
+							"name": "Update User by Id",
 							"request": {
 								"auth": {
 									"type": "bearer",
