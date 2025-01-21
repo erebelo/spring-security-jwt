@@ -14,8 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(AUTHORIZATION_PATH)
@@ -31,12 +31,10 @@ public class AuthorizationController {
 
     private final AuthenticationService service;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationController.class);
-
     @Operation(summary = "POST Sign Up")
     @PostMapping(value = SIGN_UP_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserCreateRequest userCreateRequest) {
-        LOGGER.info("POST {}", AUTHORIZATION_PATH + SIGN_UP_PATH);
+        log.info("POST {}", AUTHORIZATION_PATH + SIGN_UP_PATH);
         var response = service.signUp(userCreateRequest);
 
         return ResponseEntity.created(buildSignUpUri(response.getId())).body(response);
@@ -46,7 +44,7 @@ public class AuthorizationController {
     @PostMapping(value = AUTHENTICATE_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponse> authenticate(
             @Valid @RequestBody AuthenticationRequest authenticationRequest) {
-        LOGGER.info("POST {}", AUTHORIZATION_PATH + AUTHENTICATE_PATH);
+        log.info("POST {}", AUTHORIZATION_PATH + AUTHENTICATE_PATH);
         return ResponseEntity.ok(service.authenticate(authenticationRequest));
     }
 }

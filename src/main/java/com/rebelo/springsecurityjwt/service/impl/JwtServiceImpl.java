@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import javax.crypto.SecretKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class JwtServiceImpl implements JwtService {
 
@@ -25,24 +25,22 @@ public class JwtServiceImpl implements JwtService {
     @Value("${security.jwt.expiration.time}")
     private long expirationTime;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JwtServiceImpl.class);
-
     @Override
     public String extractUsername(String token) {
-        LOGGER.info("Extracting username");
+        log.info("Extracting username");
         return extractClaim(token, Claims::getSubject);
     }
 
     @Override
     public boolean validateToken(String token, UserDetails userDetails) {
-        LOGGER.info("Validating token");
+        log.info("Validating token");
         final String username = extractUsername(token);
         return username.equalsIgnoreCase(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     @Override
     public String generateToken(String username) {
-        LOGGER.info("Generating token");
+        log.info("Generating token");
         return createToken(new HashMap<>(), username);
     }
 
