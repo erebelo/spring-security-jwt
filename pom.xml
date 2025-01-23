@@ -26,17 +26,6 @@
         <mapstruct.version>1.6.3</mapstruct.version>
     </properties>
 
-    <!--Transitive dependencies-->
-    <dependencyManagement>
-        <dependencies>
-            <dependency> <!--Fixes logback-core vulnerability for versions prior to 1.5.13-->
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>1.5.13</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
