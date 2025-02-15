@@ -1,5 +1,6 @@
 package com.rebelo.springsecurityjwt;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockStatic;
 
@@ -20,7 +21,7 @@ class SpringSecurityJwtApplicationTest {
     @Test
     void contextLoads() {
         // This test simply checks if the Spring context loads successfully
-        // If it doesn't, it will throw an exception
+        assertNotNull(contextMock, "Spring context should not be null");
     }
 
     @Test
