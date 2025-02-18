@@ -21,7 +21,7 @@ REST API project developed in Java using Spring Boot 3, Spring Security 6 for JW
 
 ## Run App
 
-- Set the following environment variables: `ADMIN_PASSWORD` and `SECRET_KEY` (size >= 256 bits).
+- Set the following environment variables: `DB_PASSWORD`, `ADMIN_PASSWORD` and `SECRET_KEY` (size >= 256 bits).
 - Run the `SpringSecurityJwtApplication` class as Java Application.
 
 ## Collection
