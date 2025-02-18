@@ -6,8 +6,8 @@ import com.rebelo.springsecurityjwt.domain.enumeration.RoleEnum;
 import com.rebelo.springsecurityjwt.repository.RoleRepository;
 import com.rebelo.springsecurityjwt.repository.UserRepository;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -18,32 +18,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class DbLoaderConfiguration {
 
-    private static Set<UserRoleEntity> roles;
-
     @Bean
     public CommandLineRunner populateDatabaseAndInitializeRoles(UserRepository userRepository,
             RoleRepository roleRepository, PasswordEncoder passwordEncoder,
             @Value("${admin.user.password}") String adminPassword) {
         return args -> {
-            List<UserRoleEntity> newRoles = new ArrayList<>();
-            newRoles.add(new UserRoleEntity(RoleEnum.ADMIN));
-            newRoles.add(new UserRoleEntity(RoleEnum.USER));
+            List<UserRoleEntity> roles = new ArrayList<>();
+            roles.add(new UserRoleEntity(RoleEnum.ADMIN));
+            roles.add(new UserRoleEntity(RoleEnum.USER));
 
-            roles = Set.copyOf(roleRepository.saveAll(newRoles));
+            Set<UserRoleEntity> savedRoles = new HashSet<>(roleRepository.saveAll(roles));
 
             UserEntity user = UserEntity.builder().name("Admin").email("admin@mail.com")
-                    .password(passwordEncoder.encode(adminPassword)).roles(DbLoaderConfiguration.roles).build();
+                    .password(passwordEncoder.encode(adminPassword)).roles(savedRoles).build();
 
             userRepository.save(user);
         };
-    }
-
-    public static UserRoleEntity getRoleByName(RoleEnum roleName) {
-        if (roles == null) {
-            throw new IllegalStateException("User roles have not been initialized.");
-        }
-
-        return roles.stream().filter(role -> role.getRole().equals(roleName)).findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Role with ID " + roleName.getCode() + " not found"));
     }
 }
