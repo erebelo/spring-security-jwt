@@ -6,7 +6,6 @@ import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.AuthenticationException;
@@ -19,59 +18,59 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseBody
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> handleException(Exception exception) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody ExceptionResponse handleException(Exception exception) {
         log.error("Exception thrown:", exception);
         return parseExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
     }
 
-    @ResponseBody
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ExceptionResponse> handleIllegalStateException(IllegalStateException exception) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody ExceptionResponse handleIllegalStateException(IllegalStateException exception) {
         log.error("IllegalStateException thrown:", exception);
         return parseExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
     }
 
-    @ResponseBody
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ExceptionResponse handleIllegalArgumentException(IllegalArgumentException exception) {
         log.error("IllegalArgumentException thrown:", exception);
         return parseExceptionMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-    @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ExceptionResponse> handleConstraintViolationException(
-            ConstraintViolationException exception) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ExceptionResponse handleConstraintViolationException(ConstraintViolationException exception) {
         log.error("ConstraintViolationException thrown:", exception);
         return parseExceptionMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-    @ResponseBody
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<ExceptionResponse> handleHttpMediaTypeNotSupportedException(
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    public @ResponseBody ExceptionResponse handleHttpMediaTypeNotSupportedException(
             HttpMediaTypeNotSupportedException exception) {
         log.error("HttpMediaTypeNotSupportedException thrown:", exception);
         return parseExceptionMessage(HttpStatus.UNSUPPORTED_MEDIA_TYPE, exception.getMessage());
     }
 
-    @ResponseBody
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ExceptionResponse handleHttpMessageNotReadableException(
             HttpMessageNotReadableException exception) {
         log.error("HttpMessageNotReadableException thrown:", exception);
         return parseExceptionMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-    @ResponseBody
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ExceptionResponse> handleHttpRequestMethodNotSupportedException(
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public @ResponseBody ExceptionResponse handleHttpRequestMethodNotSupportedException(
             HttpRequestMethodNotSupportedException exception) {
         log.error("HttpRequestMethodNotSupportedException thrown:", exception);
 
@@ -84,9 +83,9 @@ public class GlobalExceptionHandler {
         return parseExceptionMessage(HttpStatus.METHOD_NOT_ALLOWED, errorMessage);
     }
 
-    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ExceptionResponse handleMethodArgumentNotValidException(
             MethodArgumentNotValidException exception) {
         log.error("MethodArgumentNotValidException thrown:", exception);
 
@@ -100,7 +99,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TransactionSystemException.class)
-    public ResponseEntity<ExceptionResponse> handleTransactionSystemException(TransactionSystemException exception) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody ExceptionResponse handleTransactionSystemException(TransactionSystemException exception) {
         log.error("TransactionSystemException thrown:", exception);
 
         String errorMessage = "An error occurred during transaction processing";
@@ -113,13 +113,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ExceptionResponse> handleAuthenticationException(AuthenticationException exception) {
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public @ResponseBody ExceptionResponse handleAuthenticationException(AuthenticationException exception) {
         log.error("AuthenticationException thrown:", exception);
         return parseExceptionMessage(HttpStatus.UNAUTHORIZED, "Authentication failed: " + exception.getMessage());
     }
 
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleAuthenticationCredentialsNotFoundException(
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public @ResponseBody ExceptionResponse handleAuthenticationCredentialsNotFoundException(
             AuthenticationCredentialsNotFoundException exception) {
         log.error("AuthenticationCredentialsNotFoundException thrown:", exception);
         return parseExceptionMessage(HttpStatus.UNAUTHORIZED,
@@ -127,23 +129,21 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException exception) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ExceptionResponse handleNotFoundException(NotFoundException exception) {
         log.error("NotFoundException thrown:", exception);
         return parseExceptionMessage(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
     @ExceptionHandler(UnprocessableEntityException.class)
-    public ResponseEntity<ExceptionResponse> handleUnprocessableEntityException(
-            UnprocessableEntityException exception) {
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public @ResponseBody ExceptionResponse handleUnprocessableEntityException(UnprocessableEntityException exception) {
         log.error("UnprocessableEntityException thrown:", exception);
         return parseExceptionMessage(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
     }
 
-    private ResponseEntity<ExceptionResponse> parseExceptionMessage(final HttpStatus httpStatus, final String message) {
-        HttpStatus errorHttpStatus = ObjectUtils.isEmpty(httpStatus) ? HttpStatus.INTERNAL_SERVER_ERROR : httpStatus;
+    private ExceptionResponse parseExceptionMessage(final HttpStatus httpStatus, final String message) {
         String errorMessage = ObjectUtils.isEmpty(message) ? "No defined message" : message;
-
-        return ResponseEntity.status(httpStatus)
-                .body(new ExceptionResponse(errorHttpStatus, errorMessage, System.currentTimeMillis()));
+        return new ExceptionResponse(httpStatus, errorMessage, System.currentTimeMillis());
     }
 }
