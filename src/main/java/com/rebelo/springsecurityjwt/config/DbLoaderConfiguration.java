@@ -31,7 +31,7 @@ public class DbLoaderConfiguration {
 
             roles = Set.copyOf(roleRepository.saveAll(newRoles));
 
-            var user = UserEntity.builder().name("Admin").email("admin@mail.com")
+            UserEntity user = UserEntity.builder().name("Admin").email("admin@mail.com")
                     .password(passwordEncoder.encode(adminPassword)).roles(DbLoaderConfiguration.roles).build();
 
             userRepository.save(user);

@@ -8,7 +8,7 @@ public class MaskUtil {
 
     public static String maskEmail(String email) {
         if (!ObjectUtils.isEmpty(email)) {
-            var atIndex = email.indexOf('@');
+            int atIndex = email.indexOf('@');
 
             if (atIndex > 2) {
                 return "***" + email.substring(atIndex - 2);

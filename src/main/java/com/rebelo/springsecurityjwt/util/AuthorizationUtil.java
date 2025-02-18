@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class AuthorizationUtil {
 
     public static String getAuthenticatedUsername() {
-        var authentication = getAuthentication();
+        Authentication authentication = getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
             return authentication.getName();

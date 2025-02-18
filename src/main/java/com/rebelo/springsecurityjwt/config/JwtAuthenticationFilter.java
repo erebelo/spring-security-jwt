@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 username = jwtService.extractUsername(token);
             } catch (JwtException e) {
-                var exceptionResponse = new ExceptionResponse(HttpStatus.UNAUTHORIZED,
+                ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.UNAUTHORIZED,
                         "JWT Exception: " + e.getMessage(), System.currentTimeMillis());
                 response.getWriter().write(new ObjectMapper().writeValueAsString(exceptionResponse));
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -55,8 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (jwtService.validateToken(token, userDetails)) {
-                var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
-                        userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }

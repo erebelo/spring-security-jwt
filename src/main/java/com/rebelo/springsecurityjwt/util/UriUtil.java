@@ -12,7 +12,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class UriUtil {
 
     public static URI buildSignUpUri(Long id) {
-        var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri().toString();
+        String uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri()
+                .toString();
         uri = uri.replace(AUTHORIZATION_PATH + SIGN_UP_PATH, USERS_PATH);
 
         return URI.create(uri);

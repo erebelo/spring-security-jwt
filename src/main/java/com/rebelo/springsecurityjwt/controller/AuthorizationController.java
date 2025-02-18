@@ -35,7 +35,7 @@ public class AuthorizationController {
     @PostMapping(value = SIGN_UP_PATH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserCreateRequest userCreateRequest) {
         log.info("POST {}", AUTHORIZATION_PATH + SIGN_UP_PATH);
-        var response = service.signUp(userCreateRequest);
+        UserResponse response = service.signUp(userCreateRequest);
 
         return ResponseEntity.created(buildSignUpUri(response.getId())).body(response);
     }
