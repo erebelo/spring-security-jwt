@@ -98,6 +98,7 @@ public class GlobalExceptionHandler {
         return parseExceptionMessage(HttpStatus.BAD_REQUEST, errorMessage);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @ExceptionHandler(TransactionSystemException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody ExceptionResponse handleTransactionSystemException(TransactionSystemException exception) {
