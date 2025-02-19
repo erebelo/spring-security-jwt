@@ -42,7 +42,6 @@ public class AuthorizationController {
         log.info("POST {}", AUTHORIZATION_PATH + SIGN_UP_PATH);
         UserResponse response = service.signUp(userCreateRequest);
         httpServletResponse.setHeader(HttpHeaders.LOCATION, buildSignUpUri(response.getId()).toString());
-
         return response;
     }
 
